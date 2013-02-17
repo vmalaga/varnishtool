@@ -11,10 +11,12 @@ Python libs
 ===========
 Is better to work with virtualenv and use of virtualenvwrapper is easy
 
+```bash
 # apt-get install virtualenvwrapper
 # mkvirtualenv djvaradm
 # workon djvaradm
 (djvaradm)# pip install -r requirements.txt
+```
 
 
 Issues
