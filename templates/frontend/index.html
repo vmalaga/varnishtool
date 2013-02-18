@@ -1,27 +1,17 @@
-{% extends "base.html" %}
+{% extends "frontend/header.html" %}
 {% comment %}
-This is the main template for all portal pages.
+
+Main page of the portal.
+
 {% endcomment %}
 
-{% block head %}
-    <title>Django Consultants | {% block title %}{% endblock %}</title>
+{% block title %}
+Portal
 {% endblock %}
 
-{% block body %}
-    <header>
-        <h1>Django Consultants | Web Portal</h1>
-    </header>
-
+{% block content %}
     <section>
-        <ul>
-            <li><a href="/">home</a></li>
-            <li><a href="/logout/">logout</a></li>
-        </ul>
+        <h2>Welcome, {{ user.username }}</h2>
+        <p>This is the main page of the web portal.</p>
     </section>
-
-    {% block content %}{% endblock %}
-
-    <footer>
-        <span>© 2010, Django Consultants</span>
-    </footer>
 {% endblock %}
