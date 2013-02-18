@@ -1,6 +1,5 @@
 from django.conf.urls import patterns, include, url
 
-from frontend.views import index_view
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -16,5 +15,16 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
-    url('^$', index_view)
+    url('^$', 'frontend.views.index_view'),
+
+    # Login / logout.
+    (r'^login/$', 'django.contrib.auth.views.login'),
+    (r'^logout/$', 'frontend.views.logout_page'),
+
+    # Frontend.
+    (r'^frontend/', include('frontend.urls')),
+
+    # Serve static content.
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'static'}),
+
 )

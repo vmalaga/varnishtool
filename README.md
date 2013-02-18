@@ -22,5 +22,6 @@ Is better to work with virtualenv and use of virtualenvwrapper is easy
 Issues
 ======
 if you get [Errno 13] Permission denied: '/etc/varnish/secret' must change permissions on varnish secret file
+```
 # sudo chmod 666 /etc/varnish/secret
-
+```
