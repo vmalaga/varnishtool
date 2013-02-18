@@ -6,12 +6,18 @@ Main page to authenticate users.
 {% endcomment %}
 
 {% block head %}
-    <title>Django Consultants | Login</title>
+    <title>Django Varnish Admin | Login</title>
+{% endblock %}
+
+{% load bootstrap_toolkit %}
+
+{% block extra_head %}
+    {{ form.media }}
 {% endblock %}
 
 {% block body %}
     <header>
-        <h1>Django Consultants</h1>
+        <h1>Django Varnish Admin</h1>
         <h2>Login Page</h2>
     </header>
 
@@ -22,20 +28,15 @@ Main page to authenticate users.
 
         <form method="post" action=".">
             {% csrf_token %}
-            <p>
-                <label for="id_username">Username:</label>
-                {{ form.username }}
-            </p>
-            <p>
-                <label for="id_password">Password:</label>
-                {{ form.password }}
-            </p>
+	    {{ form|as_bootstrap }}
             {% if next %}
                 <input type="hidden" name="next" value="{{ next }}" />
             {% else %}
                 <input type="hidden" name="next" value="/frontend/" />
             {% endif %}
-            <input type="submit" value="login" />
+	    <div class="form-actions">
+		    <button type="submit" class="btn btn-primary">Login</button>
+	    </div>
         </form>
     </section>
 {% endblock %}
