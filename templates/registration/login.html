@@ -1,11 +1,5 @@
 {% extends "base.html" %}
 
-{% comment %}
-
-Main page to authenticate users.
-
-{% endcomment %}
-
 {% load bootstrap_toolkit %}
 
 {% block head %}
@@ -18,25 +12,24 @@ Main page to authenticate users.
 
 {% block body %}
     {% include "frontend/header.html" %}
-    <h2>Login Page</h2>
-
-
-    <section>
-        {% if form.errors %}
+    <div class="login-content" align="center">
+    	<h2>Login Page</h2>
+    	
+    	{% if form.errors %}
             <p>Your username and password didn't match, please try again.</p>
         {% endif %}
 
         <form method="post" action=".">
-            {% csrf_token %}
-	    {{ form|as_bootstrap }}
+        	{% csrf_token %}
+        	{{ form|as_bootstrap }}
             {% if next %}
                 <input type="hidden" name="next" value="{{ next }}" />
             {% else %}
                 <input type="hidden" name="next" value="/frontend/" />
             {% endif %}
-	    <div class="form-actions">
-		    <button type="submit" class="btn btn-primary">Login</button>
-	    </div>
+	    	<div class="form-actions">
+		    	<button type="submit" class="btn btn-primary">Login</button>
+	    	</div>
         </form>
-    </section>
+       </div>
 {% endblock %}

@@ -2,3 +2,5 @@
 .idea
 .idea/*
 djvaradm.dbf
+.pydevproject
+.project
