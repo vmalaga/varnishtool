@@ -1,27 +1,25 @@
 {% extends "base.html" %}
+
 {% comment %}
 
 Main page to authenticate users.
 
 {% endcomment %}
+
 {% load bootstrap_toolkit %}
 
 {% block head %}
-    <title>Django Varnish Admin | Login</title>
+    <title>Varnish Admin | Login</title>
     {% bootstrap_stylesheet_tag %}
 {% endblock %}
 
 
 
-{% block extra_head %}
-    {{ form.media }}
-{% endblock %}
 
 {% block body %}
-    <header>
-        <h1>Django Varnish Admin</h1>
-        <h2>Login Page</h2>
-    </header>
+    {% include "frontend/header.html" %}
+    <h2>Login Page</h2>
+
 
     <section>
         {% if form.errors %}
