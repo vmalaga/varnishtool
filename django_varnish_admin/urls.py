@@ -25,6 +25,6 @@ urlpatterns = patterns('',
     (r'^frontend/', include('frontend.urls')),
 
     # Serve static content.
-    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'static'}),
+    #(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'static'}),
 
 )

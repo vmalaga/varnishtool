@@ -1,27 +1,43 @@
 {% extends "base.html" %}
-{% comment %}
-This is the main template for all portal pages.
-{% endcomment %}
+{% load i18n %}
+
+{% load bootstrap_toolkit %}
 
 {% block head %}
-    <title>Django Consultants | {% block title %}{% endblock %}</title>
+    <title>Varnish Admin | {% block title %}{% endblock %}</title>
+    {% bootstrap_stylesheet_tag %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    {% bootstrap_javascript_tag %}
 {% endblock %}
 
 {% block body %}
-    <header>
-        <h1>Django Consultants | Web Portal</h1>
-    </header>
+    {% blocktrans %}
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <ul class="nav">
+                        <li class="brand">Varnish Admin</li>
+                        <li class="active"><a href="#">Status</a></li>
+                        <li><a href="#">VCL</a></li>
+                        <li><a href="#">Ban URL</a></li>
 
-    <section>
-        <ul>
-            <li><a href="/">home</a></li>
-            <li><a href="/logout/">logout</a></li>
-        </ul>
-    </section>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                System
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/logout/">Logout</a>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endblocktrans %}
 
-    {% block content %}{% endblock %}
 
-    <footer>
-        <span>© 2010, Django Consultants</span>
-    </footer>
+
 {% endblock %}

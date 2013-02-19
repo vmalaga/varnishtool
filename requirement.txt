@@ -1,3 +1,0 @@
-django
-varnish-admin-socket
-MySQL-python

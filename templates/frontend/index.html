@@ -1,12 +1,12 @@
-{% extends "frontend/header.html" %}
+{% include "frontend/header.html" %}
 {% comment %}
 
-Main page of the portal.
+Main page of the app.
 
 {% endcomment %}
 
 {% block title %}
-Portal
+Varnish Admin
 {% endblock %}
 
 {% block content %}
@@ -15,3 +15,5 @@ Portal
         <p>This is the main page of the web portal.</p>
     </section>
 {% endblock %}
+
+{% include "frontend/footer.html" %}

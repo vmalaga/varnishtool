@@ -4,12 +4,14 @@
 Main page to authenticate users.
 
 {% endcomment %}
+{% load bootstrap_toolkit %}
 
 {% block head %}
     <title>Django Varnish Admin | Login</title>
+    {% bootstrap_stylesheet_tag %}
 {% endblock %}
 
-{% load bootstrap_toolkit %}
+
 
 {% block extra_head %}
     {{ form.media }}
