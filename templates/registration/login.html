@@ -1,35 +1,28 @@
-{% extends "base.html" %}
-
 {% load bootstrap_toolkit %}
-
-{% block head %}
-    <title>Varnish Admin | Login</title>
-    {% bootstrap_stylesheet_tag %}
-{% endblock %}
-
-
-
-
 {% block body %}
     {% include "frontend/header.html" %}
-    <div class="login-content" align="center">
-    	<h2>Login Page</h2>
+    <div align="center">
+    	<img src="/static/varnish_logo_full.png">
     	
     	{% if form.errors %}
             <p>Your username and password didn't match, please try again.</p>
         {% endif %}
 
+
         <form method="post" action=".">
-        	{% csrf_token %}
-        	{{ form|as_bootstrap }}
+            {% csrf_token %}
+            <div class="form-actions">
+            {{ form|as_bootstrap }}
             {% if next %}
                 <input type="hidden" name="next" value="{{ next }}" />
             {% else %}
                 <input type="hidden" name="next" value="/frontend/" />
             {% endif %}
-	    	<div class="form-actions">
-		    	<button type="submit" class="btn btn-primary">Login</button>
-	    	</div>
+
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
         </form>
-       </div>
+
+    </div>
 {% endblock %}
+{% include "frontend/footer.html" %}
