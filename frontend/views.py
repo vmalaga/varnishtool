@@ -4,10 +4,12 @@ from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
+from functions import varbanner
 
 
 @login_required
 def index_view(request):
+    varbanner()
     return render_to_response('frontend/index.html')
 
 def logout_page(request):
