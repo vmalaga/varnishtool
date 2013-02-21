@@ -2,3 +2,4 @@ django
 varnish-admin-socket
 MySQL-python
 django-bootstrap-toolkit
+ipython

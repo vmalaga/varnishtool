@@ -8,9 +8,13 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def index_view(request):
     version = varnishVersion()
-    varnish = conn_varnish()
     stats = varnish_stats()
-    banner = varnish.command('banner').splitlines()
+    varnish = conn_varnish()
+    if type(varnish) == str:
+        banner = varnish
+        stats = ""
+    else:
+        banner = varnish.command('banner').splitlines()
     return render_to_response('frontend/index.html',{'banner':banner,
                                                      'version':version,
                                                      'varnish_stats':stats})

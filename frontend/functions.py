@@ -5,10 +5,15 @@ def conn_varnish():
     varnish = VarnishAdminSocket()
     varnish.host = '127.0.0.1'
     varnish.port = 6082
-    secret = open('/etc/varnish/secret')
-    varnish.secret = secret.readline()
-    varnish.connect()
-    return varnish
+    try:
+        secret = open('/etc/varnish/secret')
+        varnish.secret = secret.readline()
+        varnish.connect()
+        return varnish
+    except IOError:
+        varnish = "Error while reading varnish secret file, please # chmod /etc/varnish/secret"
+        return varnish
+        #sys.exit(255)
 
 def varbanner():
     varnish = conn_varnish()
@@ -16,11 +21,16 @@ def varbanner():
     return banner
 
 def varnish_stats():
-    varnish = conn_varnish()
-    varnish_stats = subprocess.check_output("varnishstat -1",stderr=subprocess.STDOUT, shell=True)
-    return varnish_stats.splitlines()
+    try:
+        varnish_stats = subprocess.check_output("varnishstat -1",stderr=subprocess.STDOUT, shell=True)
+        return varnish_stats.splitlines()
+    except subprocess.CalledProcessError:
+        return "Error getting varnishstats on local machine"
 
 
 def varnishVersion():
-    varnish_version = subprocess.check_output("varnishd -V",stderr=subprocess.STDOUT, shell=True)
-    return varnish_version.splitlines()[0][10:-1]
+    try:
+        varnish_version = subprocess.check_output("varnishd -V",stderr=subprocess.STDOUT, shell=True)
+        return varnish_version.splitlines()[0][10:-1]
+    except subprocess.CalledProcessError:
+        return "Error getting varnishd version"
