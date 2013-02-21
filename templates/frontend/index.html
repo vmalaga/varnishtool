@@ -6,12 +6,18 @@ Main page of the app.
 {% endcomment %}
 
 {% block content %}
-    <section>
-        <pre>
-            <p>{{ banner }}</p>
-            <p>{{ varnish_stats }}</p>
-        </pre>
-    </section>
+    <!-- <p>{{ banner }}</p> -->
+    <!-- <p>{{ varnish_stats }}</p> -->
+    
+    {% for statname, value in varnish_stats.items %}
+<!--     	<span class="label label-important">{{ statname }}</span>
+    	<span class="label label-info">{{value}}</span> -->
+    	<div class="well" style="max-width: 20%;">
+    		<!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
+    		<strong>{{ statname }}</strong> {{ value }}
+    	</div>
+	{% endfor %}
+
 {% endblock %}
 
 {% include "frontend/footer.html" %}
