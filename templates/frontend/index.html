@@ -5,15 +5,12 @@ Main page of the app.
 
 {% endcomment %}
 
-{% block title %}
-Varnish Admin
-{% endblock %}
-
 {% block content %}
     <section>
-        <h2>Welcome, {{ user.username }}</h2>
-        {{ banner }}
-        <p>This is the main page of the web portal.</p>
+        <pre>
+            <p>{{ banner }}</p>
+            <p>{{ varnish_stats }}</p>
+        </pre>
     </section>
 {% endblock %}
 
