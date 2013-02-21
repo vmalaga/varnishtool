@@ -11,7 +11,7 @@ def conn_varnish():
         varnish.connect()
         return varnish
     except IOError:
-        varnish = "Error while reading varnish secret file, please # chmod /etc/varnish/secret"
+        varnish = "Error while reading varnish secret file, please # sudo chmod 644 /etc/varnish/secret"
         return varnish
         #sys.exit(255)
 
