@@ -6,9 +6,15 @@ Main page of the app.
 {% endcomment %}
 
 {% block content %}
+<script>
+function render (){
+$('#tabla').html()
+}
+window.setInterval(render, 3);
+</script>
     <!-- <p>{{ banner }}</p> -->
     <!-- <p>{{ varnish_stats }}</p> -->
-    
+<div id="tabla">    
     {% for statname, value in varnish_stats.items %}
 <!--     	<span class="label label-important">{{ statname }}</span>
     	<span class="label label-info">{{value}}</span> -->
@@ -17,7 +23,7 @@ Main page of the app.
     		<strong>{{ statname }}</strong> {{ value }}
     	</div>
 	{% endfor %}
-
+</div>
 {% endblock %}
 
 {% include "frontend/footer.html" %}
