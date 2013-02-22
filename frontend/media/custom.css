@@ -10,7 +10,3 @@
     -webkit-box-shadow: rgba(200,200,200,0.7) 0 4px 10px -1px;
     box-shadow: rgba(200,200,200,0.7) 0 4px 10px -1px;
 }
-
-.navbar.navbar-fixed-bottom.pull-right {
-    background-color: #e5e5e5;
-}

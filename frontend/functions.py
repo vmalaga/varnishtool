@@ -48,6 +48,6 @@ def varnish_stats():
 def varnishVersion():
     try:
         varnish_version = subprocess.check_output("varnishd -V",stderr=subprocess.STDOUT, shell=True)
-        return varnish_version.splitlines()[0][10:-1]
+        return varnish_version[10:23]
     except subprocess.CalledProcessError:
         return "Error getting varnishd version"
