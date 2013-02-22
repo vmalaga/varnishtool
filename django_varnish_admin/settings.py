@@ -122,6 +122,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'bootstrap_toolkit',
     'frontend',
+    'gunicorn',
 )
 
 # A sample logging configuration. The only tangible logging
