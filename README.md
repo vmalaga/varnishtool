@@ -9,7 +9,7 @@ Install instructions
 * Also you need a minimal build developement tools like gcc
 
 Python libs
-===========
+-----------
 Is better to work with virtualenv and use of virtualenvwrapper is easy
 
 ```bash
@@ -18,6 +18,12 @@ Is better to work with virtualenv and use of virtualenvwrapper is easy
 # workon djvaradm
 # (djvaradm)# pip install -r requirements.txt
 # (djvaradm)# ./manage.py syncdb
+```
+
+Run APP
+-------
+```
+# /manage.py run_gunicorn --bind=0.0.0.0 --error-logfile=/var/log/gunicorn.log -D
 ```
 
 

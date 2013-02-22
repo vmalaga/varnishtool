@@ -21,5 +21,8 @@ urlpatterns = patterns('',
     (r'^login/$', 'django.contrib.auth.views.login'),
     (r'^logout/$', 'frontend.views.logout_page'),
 
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+)
+
 
 )
