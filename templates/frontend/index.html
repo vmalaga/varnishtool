@@ -7,11 +7,21 @@ Main page of the app.
 
 {% block content %}
 <script>
-function render (){
-$('#tabla').html()
-}
-window.setInterval(render, 3);
+	function refresh() {
+		$.ajax({
+	  url: '{% url monitor-test %}',
+	  success: function(data) {
+	  var dtr = $("#tabla", data);
+	  $('#tabla').html(dtr);
+	        }
+	    });
+	  setTimeout("refresh()", 3000);
+	}
+	$(function(){
+	    refresh();
+	});
 </script>
+
     <!-- <p>{{ banner }}</p> -->
     <!-- <p>{{ varnish_stats }}</p> -->
 <div id="tabla">    
