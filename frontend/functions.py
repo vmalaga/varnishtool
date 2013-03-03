@@ -21,29 +21,38 @@ def varbanner():
     banner = varnish.command('banner')
     return banner
 
-def varnish_stats():
-    try:
-        varnish_stats = subprocess.check_output("varnishstat -1",
-            stderr=subprocess.STDOUT, 
-            shell=True).splitlines()
-        stats_dict = dict((line.split( )[0],line.split( )[1]) for line in varnish_stats)
-        client_conn = stats_dict['client_conn'] # Client connections accepted
-        client_req = stats_dict['client_req'] # Client requests received
-        cache_hit = stats_dict['cache_hit'] # Cache hits
-        cache_hitpass = stats_dict['cache_hitpass'] # Cache hits for pass
-        cache_miss = stats_dict['cache_miss'] # Cache misses
-        backend_conn = stats_dict['backend_conn'] # Backend conn. success
-        backend_fail = stats_dict['backend_fail'] # Backend conn. failures
-        backend_reuse = stats_dict['backend_reuse'] # Backend conn. reuses
-        backend_toolate = stats_dict['backend_toolate'] # Backend conn. was closed
-        backend_recycle = stats_dict['backend_recycle'] # Backend conn. recycles
+class varnish_stats():
+    """Varnish stats class"""
+    def get_stats(self):
+        try:
+            varnish_stats = subprocess.check_output("varnishstat -1",
+                stderr=subprocess.STDOUT, 
+                shell=True).splitlines()
+            
+            self.stats_dict = dict((line.split( )[0],line.split( )[1]) for line in varnish_stats)
+            
+        except subprocess.CalledProcessError:
+            return "Error getting varnishstats on local machine"
+        
+    def client_st(self):
+        self.client_stats = {"Client Connections": self.stats_dict['client_conn'],
+        "Client Requests": self.stats_dict['client_req']}
+        return self.client_stats
 
-        stats_response = {"Client Connections":client_conn,"Client Requests":client_req,
-        'Cache Hits':cache_hit, 'Cache Misses':cache_miss, 'Cache Hit for pass':cache_hitpass}
+    def cache_st(self):
+        self.cache_stats = {"Cache Hist": self.stats_dict['cache_hit'],
+        "Cache Misses": self.stats_dict['cache_miss'],
+        "Cache Hit for pass": self.stats_dict['cache_hitpass']}
+        return self.cache_stats
 
-        return stats_response
-    except subprocess.CalledProcessError:
-        return "Error getting varnishstats on local machine"
+    def backend_st(self):
+        self.backend_stats = {"Backend Connections": self.stats_dict['backend_conn'],
+        "Backend Connections Fails": self.stats_dict['backend_fail'],
+        "Backend Reuse": self.stats_dict['backend_reuse'],
+        "Backend Connections close": self.stats_dict['backend_toolate'],
+        "Backend Connections recycle": self.stats_dict['backend_recycle']}
+        return self.backend_stats
+         
 
 
 def varnishVersion():
