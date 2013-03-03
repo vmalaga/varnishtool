@@ -9,21 +9,14 @@ from django.contrib.auth.decorators import login_required
 def index_view(request):
     version = varnishVersion()
     stats = varnish_stats()
-    varnish = conn_varnish()
-    if type(varnish) == str:
-        banner = varnish
-        stats = ""
-    else:
-        banner = varnish.command('banner').splitlines()
-    return render_to_response('frontend/index.html',{'banner':banner,
-                                                     'version':version,
-                                                     'varnish_stats':stats})
+    return render_to_response('frontend/index.html',
+        {'version':version,
+        'varnish_stats':stats})
 
+def tablestats_view(request):
+    stats = varnish_stats()
+    return render_to_response('frontend/table.html', {'varnish_stats':stats})
+    
 def logout_page(request):
     logout(request)
     return HttpResponseRedirect('/')
-
-def status_view(request):
-    pass
-
-

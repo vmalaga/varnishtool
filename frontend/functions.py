@@ -38,7 +38,8 @@ def varnish_stats():
         backend_toolate = stats_dict['backend_toolate'] # Backend conn. was closed
         backend_recycle = stats_dict['backend_recycle'] # Backend conn. recycles
 
-        stats_response = {"Client Connections":client_conn,"Client Requests":client_req}
+        stats_response = {"Client Connections":client_conn,"Client Requests":client_req,
+        'Cache Hits':cache_hit, 'Cache Misses':cache_miss, 'Cache Hit for pass':cache_hitpass}
 
         return stats_response
     except subprocess.CalledProcessError:

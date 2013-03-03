@@ -1,25 +1,5 @@
 {% include "frontend/header.html" %}
-{% comment %}
 
-Main page of the app.
-
-{% endcomment %}
-
-{% block content %}
-
-
-    <!-- <p>{{ banner }}</p> -->
-    <!-- <p>{{ varnish_stats }}</p> -->
-<div id="tabla">    
-    {% for statname, value in varnish_stats.items %}
-<!--     	<span class="label label-important">{{ statname }}</span>
-    	<span class="label label-info">{{value}}</span> -->
-    	<div class="well" style="max-width: 20%;">
-    		<!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
-    		<strong>{{ statname }}</strong> {{ value }}
-    	</div>
-	{% endfor %}
-</div>
-{% endblock %}
+{% include "frontend/table.html" %}
 
 {% include "frontend/footer.html" %}
