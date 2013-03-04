@@ -1,6 +1,7 @@
-{% load bootstrap_toolkit %}
+{% include "frontend/header.html" %}
+
 {% block body %}
-    {% include "frontend/header.html" %}
+    
     <div align="center">
     	<img class="img-rounded" src="/static/varnish_logo_full.png">
     	
@@ -24,5 +25,6 @@
         </form>
 
     </div>
+    {% include "frontend/footer.html" %}
+
 {% endblock %}
-{% include "frontend/footer.html" %}
