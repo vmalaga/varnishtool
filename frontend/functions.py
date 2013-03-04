@@ -40,10 +40,15 @@ class varnish_stats():
         return self.client_stats
 
     def cache_st(self):
+        try:
+            hitrate = int(self.stats_dict['cache_hit']) * 100 / int(self.stats_dict['client_req'])
+        except ZeroDivisionError:
+            hitrate = 0
+
         self.cache_stats = {"Cache Hist": self.stats_dict['cache_hit'],
         "Cache Misses": self.stats_dict['cache_miss'],
         "Cache Hit for pass": self.stats_dict['cache_hitpass'],
-        "Hitrate": int(self.stats_dict['cache_hit']) * 100 / int(self.stats_dict['client_req'])}
+        "Hitrate": hitrate}
         return self.cache_stats
 
     def backend_st(self):
