@@ -1,31 +1,58 @@
-{% include "frontend/header.html" %}
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/custom.css">
+<link rel="stylesheet" href="/static/bootstrap.css">
+<script src="/static/jquery.min.js"></script>
+<script src="/static/bootstrap.min.js"></script>
+{% endblock %}
 
 {% load bootstrap_toolkit %}
 {% block body %}
-    
-    <div align="center">
-    	<img class="img-rounded" src="/static/varnish_logo_full.png">
-    	
-    	{% if form.errors %}
+        <div class="navbar navbar-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand">Varnish Admin</a>
+                    <ul class="nav">
+                        <li class="active"><a href="#stats">Stats</a></li>
+                        <li><a href="#vcledit">VCL</a></li>
+                        <li><a href="#banurl">Ban URL</a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                {{ version }}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/logout/">Logout</a>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div align="center">
+            <img class="img-rounded" src="/static/varnish_logo_full.png">
+            {% if form.errors %}
             <p>Your username and password didn't match, please try again.</p>
-        {% endif %}
-
-
-        <form method="post" action=".">
-            {% csrf_token %}
-            <div class="form-actions">
-            {{ form|as_bootstrap }}
-            {% if next %}
-                <input type="hidden" name="next" value="{{ next }}" />
-            {% else %}
-                <input type="hidden" name="next" value="/frontend/" />
             {% endif %}
 
-                <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-        </form>
-
-    </div>
+            <form method="post" action=".">
+                {% csrf_token %}
+                <div class="form-actions">
+                    {{ form|as_bootstrap }}
+                    {% if next %}
+                    <input type="hidden" name="next" value="{{ next }}" />
+                    {% else %}
+                    <input type="hidden" name="next" value="/frontend/" />
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+        </div>
     {% include "frontend/footer.html" %}
 
 {% endblock %}
