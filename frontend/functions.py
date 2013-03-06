@@ -67,3 +67,11 @@ def varnishVersion():
         return varnish_version[10:23]
     except subprocess.CalledProcessError:
         return "Error getting varnishd version"
+
+def getVcl():
+    try:
+        vclfile = open('/etc/varnish/default.vcl', 'r+').readlines()
+        vcltext = ' '.join(vclfile)
+        return vcltext
+    except IOError:
+        return "Error open file"

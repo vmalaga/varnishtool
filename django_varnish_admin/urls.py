@@ -18,6 +18,8 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
     url('^$', 'frontend.views.index_view', name="index_view"),
     url(r'^tablestats/$', 'frontend.views.tablestats_view', name='tablestats_view'),
+    url(r'^vcledit/$', 'frontend.views.vcledit_view', name='vcledit_view'),
+    
 
     # Login / logout.
     (r'^login/$', 'django.contrib.auth.views.login'),

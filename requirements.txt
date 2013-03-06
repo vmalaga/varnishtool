@@ -5,3 +5,4 @@ MySQL-python
 django-bootstrap-toolkit
 ipython
 gunicorn
+django-debug-toolbar

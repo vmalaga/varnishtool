@@ -98,6 +98,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -124,6 +125,7 @@ INSTALLED_APPS = (
     'bootstrap_toolkit',
     'frontend',
     'gunicorn',
+    'debug_toolbar',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -162,3 +164,5 @@ BOOTSTRAP_BASE_URL      = 'http://twitter.github.com/bootstrap/assets/'
 BOOTSTRAP_CSS_BASE_URL  = BOOTSTRAP_BASE_URL + 'css/'
 BOOTSTRAP_CSS_URL       = BOOTSTRAP_CSS_BASE_URL + 'bootstrap.css'
 BOOTSTRAP_JS_BASE_URL   = BOOTSTRAP_BASE_URL + 'js/'
+
+INTERNAL_IPS = ('127.0.0.1',)

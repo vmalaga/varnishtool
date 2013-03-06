@@ -1,32 +1,8 @@
-{% include "frontend/header.html" %}
+{% extends "frontend/header.html" %}
+{% load i18n %}
 
 {% block body %}
-
-		<!-- Navigation bar -->
-        <div class="navbar navbar-top">
-            <div class="navbar-inner">
-                <div class="container">
-                	<a class="brand">Varnish Admin</a>
-                    <ul class="nav">
-                        <li class="active"><a href="#stats">Stats</a></li>
-                        <li><a href="#vcledit">VCL</a></li>
-                        <li><a href="#banurl">Ban URL</a></li>
-                    </ul>
-                    <ul class="nav pull-right">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                {{ version }}
-                                <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/logout/">Logout</a>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
+		{{ block.super }}
         <!-- Left menu with stats results -->
         <div class="tabbable tabs-left" id="stats">
         	<ul class="nav nav-tabs">
