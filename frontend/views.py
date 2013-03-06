@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse
 
 
+
 @login_required
 def index_view(request):
     version = varnishVersion()
@@ -18,7 +19,8 @@ def index_view(request):
         {'version':version,
         'client_stats':client_stats,
         'cache_stats': cache_stats,
-        'backend_stats': backend_stats})
+        'backend_stats': backend_stats,
+        'page': 'index'})
 
 def tablestats_view(request):
     stats = varnish_stats()
@@ -27,7 +29,8 @@ def tablestats_view(request):
 def vcledit_view(request):
     vcltext = getVcl()
     return render_to_response('frontend/vcledit.html',
-        {'vcltext':vcltext})
+        {'vcltext':vcltext,
+        'page': 'vcledit'})
     
     
 def logout_page(request):

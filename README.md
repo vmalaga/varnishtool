@@ -1,7 +1,7 @@
 django-varnish-admin
 ====================
 
-Admin fronted for varnish 3
+This is a tool to admin varnish 3, with dashboard, statistics, vcl editor, ban urls, etc
 
 Install instructions
 --------------------

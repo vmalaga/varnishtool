@@ -98,15 +98,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'django_varnish_admin.urls'
+ROOT_URLCONF = 'conf.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'django_varnish_admin.wsgi.application'
+WSGI_APPLICATION = 'conf.wsgi.application'
 
 import os
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\','/'),)
@@ -125,7 +124,6 @@ INSTALLED_APPS = (
     'bootstrap_toolkit',
     'frontend',
     'gunicorn',
-    'debug_toolbar',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -165,4 +163,13 @@ BOOTSTRAP_CSS_BASE_URL  = BOOTSTRAP_BASE_URL + 'css/'
 BOOTSTRAP_CSS_URL       = BOOTSTRAP_CSS_BASE_URL + 'bootstrap.css'
 BOOTSTRAP_JS_BASE_URL   = BOOTSTRAP_BASE_URL + 'js/'
 
-INTERNAL_IPS = ('127.0.0.1',)
+try:
+    from local_settings import *
+except ImportError:
+    pass
+    
+# LOCAL_SETTINGS = (os.path.join(os.path.abspath('.'), 'conf/local_settings.py').replace('\\','/'))
+# if os.path.isfile(LOCAL_SETTINGS) == True:
+#     print 'LOCAL_SETTINGS_FILE= ', LOCAL_SETTINGS
+#     import conf.local_settings
+

@@ -5,3 +5,5 @@ djvaradm.dbf
 .pydevproject
 .project
 *.swp
+local_settings.py
+conf/local_settings.py

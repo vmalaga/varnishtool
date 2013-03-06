@@ -16,9 +16,17 @@
                 <div class="container">
                 	<a class="brand">VarnishTool</a>
                     <ul class="nav">
-                        <li class="active"><a href="/">Stats</a></li>
-                        <li><a href="/vcledit">VCL</a></li>
-                        <li><a href="#banurl">Ban URL</a></li>
+                        {% if page == "index" %}
+                            <li class="active"><a href="/">Stats</a></li>
+                            <li><a href="/vcledit">VCL</a></li>
+                            <li><a href="#banurl">Ban URL</a></li>
+                        {% endif %}
+                        {% if page == "vcledit" %}
+                            <li><a href="/">Stats</a></li>
+                            <li class="active"><a href="/vcledit">VCL</a></li>
+                            <li><a href="#banurl">Ban URL</a></li>
+                        {% endif %}
+
                     </ul>
                     <ul class="nav pull-right">
                         <li class="dropdown">

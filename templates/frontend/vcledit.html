@@ -2,19 +2,21 @@
 
 {% block body %}
         {{ block.super }}
-
-<div class="control-group">
-    <label class="control-label" for="textarea">VCL</label>
-    <div class="controls">
-        <textarea class="input-xlarge" id="textarea" rows="20">
-            {{ vcltext }}
-        </textarea>
+<div class="container">
+    <h2>VCL editor</h2>
+    <div class="control-group">
+        <label class="control-label" for="textarea">default.vcl</label>
+        <div class="controls">
+            <textarea class="input-xxlarge" id="textarea" rows="20">
+{{ vcltext }}
+            </textarea>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Test VCL</button>
+            <button type="submit" class="btn btn-secondary">Save changes</button>
+            <button class="btn">Cancel</button>
+        </div>
     </div>
 </div>
-<div class="form-actions">
-    <button type="submit" class="btn btn-primary">Save changes</button>
-    <button class="btn">Cancel</button>
-</div>
-
 {% include "frontend/footer.html" %}
 {% endblock %}
