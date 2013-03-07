@@ -27,12 +27,16 @@ def tablestats_view(request):
     return render_to_response('frontend/table.html', {'varnish_stats':stats})
 
 def vcledit_view(request):
+    version = varnishVersion()
     vcltext = getVcl()
     return render_to_response('frontend/vcledit.html',
         {'vcltext':vcltext,
-        'page': 'vcledit'})
+        'page': 'vcledit',
+        'version':version})
     
     
 def logout_page(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+

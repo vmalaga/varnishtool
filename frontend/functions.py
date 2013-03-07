@@ -45,9 +45,9 @@ class varnish_stats():
         except ZeroDivisionError:
             hitrate = 0
 
-        self.cache_stats = {"Cache Hist": self.stats_dict['cache_hit'],
-        "Cache Misses": self.stats_dict['cache_miss'],
-        "Cache Hit for pass": self.stats_dict['cache_hitpass'],
+        self.cache_stats = {"Cache_Hits": self.stats_dict['cache_hit'],
+        "Cache_Misses": self.stats_dict['cache_miss'],
+        "Cache_Hit_for_pass": self.stats_dict['cache_hitpass'],
         "Hitrate": hitrate}
         return self.cache_stats
 

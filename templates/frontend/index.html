@@ -1,35 +1,45 @@
 {% extends "frontend/header.html" %}
-{% include "frontend/goocharts.html" %}
+
 {% load i18n %}
 
 {% block head %}
         {{ block.super }}
-        <UserPref name="_table_query_refresh_interval" display_name="Data refresh interval (minutes)" default_value="0" datatype="enum" required="false">
-  <EnumValue value="0" display_value="None"/>
-  <EnumValue value="60" display_value="1"/>
-  <EnumValue value="300" display_value="5"/>
-  <EnumValue value="1800" display_value="30"/>
-</UserPref>
+        
 <script type='text/javascript' src='https://www.google.com/jsapi'></script>
-<script type='text/javascript'>
-        google.load('visualization', '1', {packages:['gauge']});
-        google.setOnLoadCallback(drawChart);
-        function drawChart() {
-                var data = google.visualization.arrayToDataTable([
-                        ['Label', 'Value'],
-                        ['HitRate', {{ cache_stats.Hitrate }}],
-                        ['Requests', {{ client_stats.Client_Requests }}],
-                        ['Network', 68]
-                ]);
-                var options = {
-                        width: 400, height: 120,
-                        redFrom: 90, redTo: 100,
-                        yellowFrom:75, yellowTo: 90,
-                        minorTicks: 5
-                };
-                var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
-        chart.draw(data, options);
-        }
+<script type="text/javascript">
+    function drawCharts(){
+        // Gauge cachehitrate
+        var data1 = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['HitRate', {{ cache_stats.Hitrate }}]
+        ]);
+        var options1 = {
+            width: 400, height: 120,
+            redFrom: 0, redTo: 20,
+            yellowFrom:20, yellowTo: 40,
+            greenFrom:80, greenTo: 100,
+            minorTicks: 5
+        };
+        var chart1 = new google.visualization.Gauge(document.getElementById('hitrate_div'));
+        chart1.draw(data1, options1);
+
+        // Barchart requests-hits-misses
+        var data2 = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['Cache Hits', {{ cache_stats.Cache_Hits }}],
+            ['Cache Misses', {{ cache_stats.Cache_Misses }}],
+            ['Requests', {{ client_stats.Client_Requests }}]
+        ]);
+        new google.visualization.ColumnChart(document.getElementById('hitrequest_div')).
+      draw(data2,
+           {title:"Hits - Misses - Requests",
+            width:600, height:400,
+            }
+      );
+    }
+    
+    google.setOnLoadCallback(drawCharts);
+    google.load("visualization", "1", {packages:["corechart","gauge"]});
 </script>
 
 {% endblock %}
@@ -38,21 +48,17 @@
         <!-- Left menu with stats results -->
         <div class="tabbable tabs-left" id="stats">
         	<ul class="nav nav-tabs">
-        		<li class="active"><a href="#tab1" data-toggle="tab">Client Stats</a></li>
+        		<li class="active"><a href="#tab1" data-toggle="tab">Dashboard</a></li>
         		<li><a href="#tab2" data-toggle="tab">Cache Hit</a></li>
         		<li><a href="#tab3" data-toggle="tab">Backends Stats</a></li>
         	</ul>
 
         	<div class="tab-content">
         		<div id="tab1" class="tab-pane active">
-                                <!-- Show google charts -->
-        			<div id='chart_div'></div>
-                                {% for statname, value in client_stats.items %}
-        			<div class="well" style="max-width: 20%;">
-        				<strong>{{ statname }}</strong> {{ value }}
-        			</div>
-        			{% endfor %}
-        		</div>
+                    <!-- Show google charts -->
+                    <div id='hitrate_div'></div>
+                    <div id='hitrequest_div'></div>
+                </div>
         		<div id="tab2" class="tab-pane">
         			{% for statname, value in cache_stats.items %}
         			<div class="well" style="max-width: 20%;">
