@@ -35,8 +35,8 @@ class varnish_stats():
             return "Error getting varnishstats on local machine"
         
     def client_st(self):
-        self.client_stats = {"Client Connections": self.stats_dict['client_conn'],
-        "Client Requests": self.stats_dict['client_req']}
+        self.client_stats = {"Client_Connections": self.stats_dict['client_conn'],
+        "Client_Requests": self.stats_dict['client_req']}
         return self.client_stats
 
     def cache_st(self):

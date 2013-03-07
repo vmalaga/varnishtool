@@ -167,9 +167,5 @@ try:
     from local_settings import *
 except ImportError:
     pass
-    
-# LOCAL_SETTINGS = (os.path.join(os.path.abspath('.'), 'conf/local_settings.py').replace('\\','/'))
-# if os.path.isfile(LOCAL_SETTINGS) == True:
-#     print 'LOCAL_SETTINGS_FILE= ', LOCAL_SETTINGS
-#     import conf.local_settings
+
 

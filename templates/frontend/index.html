@@ -1,6 +1,38 @@
 {% extends "frontend/header.html" %}
+{% include "frontend/goocharts.html" %}
 {% load i18n %}
 
+{% block head %}
+        {{ block.super }}
+        <UserPref name="_table_query_refresh_interval" display_name="Data refresh interval (minutes)" default_value="0" datatype="enum" required="false">
+  <EnumValue value="0" display_value="None"/>
+  <EnumValue value="60" display_value="1"/>
+  <EnumValue value="300" display_value="5"/>
+  <EnumValue value="1800" display_value="30"/>
+</UserPref>
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+<script type='text/javascript'>
+        google.load('visualization', '1', {packages:['gauge']});
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                        ['Label', 'Value'],
+                        ['HitRate', {{ cache_stats.Hitrate }}],
+                        ['Requests', {{ client_stats.Client_Requests }}],
+                        ['Network', 68]
+                ]);
+                var options = {
+                        width: 400, height: 120,
+                        redFrom: 90, redTo: 100,
+                        yellowFrom:75, yellowTo: 90,
+                        minorTicks: 5
+                };
+                var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+        chart.draw(data, options);
+        }
+</script>
+
+{% endblock %}
 {% block body %}
 		{{ block.super }}
         <!-- Left menu with stats results -->
@@ -13,7 +45,9 @@
 
         	<div class="tab-content">
         		<div id="tab1" class="tab-pane active">
-        			{% for statname, value in client_stats.items %}
+                                <!-- Show google charts -->
+        			<div id='chart_div'></div>
+                                {% for statname, value in client_stats.items %}
         			<div class="well" style="max-width: 20%;">
         				<strong>{{ statname }}</strong> {{ value }}
         			</div>
