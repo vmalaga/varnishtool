@@ -11,7 +11,8 @@
         // Gauge cachehitrate
         var data1 = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
-            ['HitRate', {{ cache_stats.Hitrate }}]
+            ['HitRate', {{ cache_stats.Hitrate }}],
+            ['MemTotal', {{ memory_stats.Bytes_allocated }}]
         ]);
         var options1 = {
             width: 400, height: 120,
@@ -39,7 +40,7 @@
     }
     
     google.setOnLoadCallback(drawCharts);
-    google.load("visualization", "1", {packages:["corechart","gauge"]});
+    google.load("visualization", "1", {packages:["corechart","gauge",]});
 </script>
 
 {% endblock %}

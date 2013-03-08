@@ -58,6 +58,17 @@ class varnish_stats():
         "Backend Connections close": self.stats_dict['backend_toolate'],
         "Backend Connections recycle": self.stats_dict['backend_recycle']}
         return self.backend_stats
+
+    def memory_st(self):
+        self.mem_stats = {
+        "Bytes_available": (int(self.stats_dict['SMA.s0.g_space'])/1024/1024),
+        "Bytes_allocated": (int(self.stats_dict['SMA.s0.c_bytes'])/1024/1024)
+        }
+
+        print self.mem_stats
+
+        return self.mem_stats
+
          
 
 

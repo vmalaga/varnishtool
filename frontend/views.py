@@ -15,11 +15,13 @@ def index_view(request):
     client_stats = stats.client_st()
     cache_stats = stats.cache_st()
     backend_stats = stats.backend_st()
+    memory_stats = stats.memory_st()
     return render_to_response('frontend/index.html',
         {'version':version,
         'client_stats':client_stats,
         'cache_stats': cache_stats,
         'backend_stats': backend_stats,
+        'memory_stats': memory_stats,
         'page': 'index'})
 
 def tablestats_view(request):
