@@ -32,10 +32,11 @@
         chart_memory = new google.visualization.Gauge(document.getElementById('memory_div')).draw(data_memory,
             {
             width: 400, height: 120,
-            redFrom: 0, redTo: 20,
-            yellowFrom:20, yellowTo: 40,
-            greenFrom:80, greenTo: 100,
-            minorTicks: 5
+            // redFrom: {{ memory_stats.Bytes_available }} , {{ memory_stats.Bytes_available }},
+            // yellowFrom:70, yellowTo: 90,
+            // greenFrom:00, greenTo: 30,
+            // minorTicks: 5,
+            max: {{ memory_stats.Bytes_available }}
             }
             );
 
@@ -74,7 +75,7 @@
                     <!-- Show google charts -->
                     <div id='hitrate_div' class="action" style="left: 140px; width: 120px; height: 100px; position: fixed;"></div>
                     <div id='memory_div' class="action" style="left: 115px; width: 120px; height: 100px position: relative;"></div>
-                    <p></p>
+                    <div></div>
                     <div id='hitrequest_div'></div>
                 </div>
         		<div id="tab2" class="tab-pane">
