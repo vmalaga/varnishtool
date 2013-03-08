@@ -7,3 +7,4 @@ djvaradm.dbf
 *.swp
 local_settings.py
 conf/local_settings.py
+.tags*

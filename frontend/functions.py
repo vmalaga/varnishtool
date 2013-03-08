@@ -65,12 +65,8 @@ class varnish_stats():
         "Bytes_allocated": (int(self.stats_dict['SMA.s0.c_bytes'])/1024/1024)
         }
 
-        print self.mem_stats
-
+        # print self.mem_stats
         return self.mem_stats
-
-         
-
 
 def varnishVersion():
     try:

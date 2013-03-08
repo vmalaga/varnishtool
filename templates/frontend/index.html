@@ -9,30 +9,45 @@
 <script type="text/javascript">
     function drawCharts(){
         // Gauge cachehitrate
-        var data1 = google.visualization.arrayToDataTable([
+        var data_hitrate = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
-            ['HitRate', {{ cache_stats.Hitrate }}],
-            ['MemTotal', {{ memory_stats.Bytes_allocated }}]
+            ['HitRate', {{ cache_stats.Hitrate }}]
         ]);
-        var options1 = {
+        
+        chart_hitrate = new google.visualization.Gauge(document.getElementById('hitrate_div')).draw(data_hitrate,
+            {
             width: 400, height: 120,
             redFrom: 0, redTo: 20,
             yellowFrom:20, yellowTo: 40,
             greenFrom:80, greenTo: 100,
             minorTicks: 5
-        };
-        var chart1 = new google.visualization.Gauge(document.getElementById('hitrate_div'));
-        chart1.draw(data1, options1);
+            }
+            );
+
+        var data_memory = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['MemTotal', {{ memory_stats.Bytes_allocated }}]
+        ]);
+        
+        chart_memory = new google.visualization.Gauge(document.getElementById('memory_div')).draw(data_memory,
+            {
+            width: 400, height: 120,
+            redFrom: 0, redTo: 20,
+            yellowFrom:20, yellowTo: 40,
+            greenFrom:80, greenTo: 100,
+            minorTicks: 5
+            }
+            );
 
         // Barchart requests-hits-misses
-        var data2 = google.visualization.arrayToDataTable([
+        var data_hitrequest = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
             ['Cache Hits', {{ cache_stats.Cache_Hits }}],
             ['Cache Misses', {{ cache_stats.Cache_Misses }}],
             ['Requests', {{ client_stats.Client_Requests }}]
         ]);
         new google.visualization.ColumnChart(document.getElementById('hitrequest_div')).
-      draw(data2,
+      draw(data_hitrequest,
            {title:"Hits - Misses - Requests",
             width:600, height:400,
             }
@@ -57,7 +72,9 @@
         	<div class="tab-content">
         		<div id="tab1" class="tab-pane active">
                     <!-- Show google charts -->
-                    <div id='hitrate_div'></div>
+                    <div id='hitrate_div' class="action" style="left: 140px; width: 120px; height: 100px; position: fixed;"></div>
+                    <div id='memory_div' class="action" style="left: 115px; width: 120px; height: 100px position: relative;"></div>
+                    <p></p>
                     <div id='hitrequest_div'></div>
                 </div>
         		<div id="tab2" class="tab-pane">

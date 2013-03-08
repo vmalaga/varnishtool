@@ -6,3 +6,4 @@ django-bootstrap-toolkit
 ipython
 gunicorn
 django-debug-toolbar
+pyxml
