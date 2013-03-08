@@ -1,4 +1,4 @@
-django-varnish-admin
+VarnishTool
 ====================
 
 This is a tool to admin varnish 3, with dashboard, statistics, vcl editor, ban urls, etc
