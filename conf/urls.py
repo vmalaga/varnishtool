@@ -16,12 +16,10 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
-    url('^$', 'frontend.views.index_view', name="index_view"),
-    url(r'^tablestats/$', 'frontend.views.tablestats_view', name='tablestats_view'),
-    url(r'^vcledit/$', 'frontend.views.vcledit_view', name='vcledit_view'),
-    url(r'^dashboard/$', 'frontend.views.dashboard_view', name='dashboard_view'),
+    ('^$', 'frontend.views.index_view'),
+    (r'^vcledit/$', 'frontend.views.vcledit_view'),
+    (r'^api/(?P<statname>\w+)/$', 'frontend.views.api_view'),
     
-
     # Login / logout.
     (r'^login/$', 'django.contrib.auth.views.login'),
     (r'^logout/$', 'frontend.views.logout_page'),

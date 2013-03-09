@@ -16,11 +16,6 @@ def conn_varnish():
         return varnish
         #sys.exit(255)
 
-def varbanner():
-    varnish = conn_varnish()
-    banner = varnish.command('banner')
-    return banner
-
 class varnish_stats():
     """Varnish stats class"""
     def get_stats(self):
@@ -61,11 +56,9 @@ class varnish_stats():
 
     def memory_st(self):
         self.mem_stats = {
-        "Bytes_available": (int(self.stats_dict['SMA.s0.g_space'])/1024/1024),
-        "Bytes_allocated": (int(self.stats_dict['SMA.s0.c_bytes'])/1024/1024)
+        "MBytes_available": (int(self.stats_dict['SMA.s0.g_space'])/1024/1024),
+        "MBytes_allocated": (int(self.stats_dict['SMA.s0.c_bytes'])/1024/1024)
         }
-
-        # print self.mem_stats
         return self.mem_stats
 
 def varnishVersion():
@@ -79,3 +72,8 @@ def getVcl():
     varnish = conn_varnish()
     vcltext = varnish.command('vcl.show boot')
     return vcltext
+
+def varbanner():
+    varnish = conn_varnish()
+    banner = varnish.command('banner')
+    return banner

@@ -19,13 +19,14 @@
         var chart_hitrate = new google.visualization.Gauge(document.getElementById('hitrate_div'))
         chart_hitrate.draw(data_hitrate, options_hitrate);
         setInterval(function() {
+            $.get("update.php",function (data){updateGages()},"json");
             data_hitrate.setValue(0, 1, 40 + Math.round(60 * Math.random()));
             chart_hitrate.draw(data_hitrate, options_hitrate);
-        }, 1000);
+        }, 5000);
 
         var data_memory = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
-            ['MemTotal', {{ memory_stats.Bytes_allocated }}]
+            ['MemTotal', {{ memory_stats.MBytes_allocated }}]
         ]);
 
         chart_memory = new google.visualization.Gauge(document.getElementById('memory_div')).draw(data_memory,
@@ -35,7 +36,7 @@
             // yellowFrom:70, yellowTo: 90,
             // greenFrom:00, greenTo: 30,
             minorTicks: 5,
-            max: {{ memory_stats.Bytes_available }}
+            max: {{ memory_stats.MBytes_available }}
             }
             );
 
