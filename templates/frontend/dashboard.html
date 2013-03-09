@@ -19,10 +19,12 @@
         var chart_hitrate = new google.visualization.Gauge(document.getElementById('hitrate_div'))
         chart_hitrate.draw(data_hitrate, options_hitrate);
         setInterval(function() {
-            $.get("update.php",function (data){updateGages()},"json");
-            data_hitrate.setValue(0, 1, 40 + Math.round(60 * Math.random()));
-            chart_hitrate.draw(data_hitrate, options_hitrate);
-        }, 5000);
+            $.get("/api/cache_stats/", function(data) {
+                data_hitrate.setValue(0,1, data.Hitrate);
+                chart_hitrate.draw(data_hitrate, options_hitrate);
+            }, "json");
+            }, 5000);
+
 
         var data_memory = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
