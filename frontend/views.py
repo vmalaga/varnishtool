@@ -23,6 +23,20 @@ def index_view(request):
         'backend_stats': backend_stats,
         'memory_stats': memory_stats,
         'page': 'index'})
+    
+import simplejson as json
+def api(request,statname):
+    stats = varnish_stats()
+    stats.get_stats()
+    if statname == "client_stats":
+        result = stats.client_st()
+    elif statname == "cache_stats":
+        result = stats.cache_st()
+    elif statname == "backend_stats":
+        result = stats.backend_st()
+    elif statname == "memory_stats":
+        result = stats.memory_st()
+    return json.dumps(result)
 
 def dashboard_view(request):
     version = varnishVersion()
@@ -51,7 +65,6 @@ def vcledit_view(request):
         {'vcltext':vcltext,
         'page': 'vcledit',
         'version':version})
-    
     
 def logout_page(request):
     logout(request)

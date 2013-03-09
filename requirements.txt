@@ -7,3 +7,4 @@ ipython
 gunicorn
 django-debug-toolbar
 pyxml
+django-extensions

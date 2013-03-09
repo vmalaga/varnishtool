@@ -7,16 +7,21 @@
             ['Label', 'Value'],
             ['HitRate', {{ cache_stats.Hitrate }}]
         ]);
-        
-        chart_hitrate = new google.visualization.Gauge(document.getElementById('hitrate_div')).draw(data_hitrate,
-            {
+
+        var options_hitrate = {
             width: 400, height: 120,
             redFrom: 0, redTo: 20,
             yellowFrom:20, yellowTo: 40,
             greenFrom:80, greenTo: 100,
             minorTicks: 5
             }
-            );
+        
+        var chart_hitrate = new google.visualization.Gauge(document.getElementById('hitrate_div'))
+        chart_hitrate.draw(data_hitrate, options_hitrate);
+        setInterval(function() {
+            data_hitrate.setValue(0, 1, 40 + Math.round(60 * Math.random()));
+            chart_hitrate.draw(data_hitrate, options_hitrate);
+        }, 1000);
 
         var data_memory = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
@@ -52,6 +57,7 @@
     google.setOnLoadCallback(drawCharts);
     google.load("visualization", "1", {packages:["corechart","gauge",]});
 </script>
+
 <div id="dashboard">
     <div id="hitrate_div" style="left: 20%; width: 140px; position: fixed;"></div>
     <div id="memory_div" style="left: 20%; width: 140px; position: relative;"></div>
