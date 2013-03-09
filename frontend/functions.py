@@ -76,9 +76,6 @@ def varnishVersion():
         return "Error getting varnishd version"
 
 def getVcl():
-    try:
-        vclfile = open('/etc/varnish/default.vcl', 'r+').readlines()
-        vcltext = ' '.join(vclfile)
-        return vcltext
-    except IOError:
-        return "Error open file"
+    varnish = conn_varnish()
+    vcltext = varnish.command('vcl.show boot')
+    return vcltext

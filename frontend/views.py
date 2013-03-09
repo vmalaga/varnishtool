@@ -24,6 +24,22 @@ def index_view(request):
         'memory_stats': memory_stats,
         'page': 'index'})
 
+def dashboard_view(request):
+    version = varnishVersion()
+    stats = varnish_stats()
+    stats.get_stats()
+    client_stats = stats.client_st()
+    cache_stats = stats.cache_st()
+    backend_stats = stats.backend_st()
+    memory_stats = stats.memory_st()
+    return render_to_response('frontend/dashboard.html',
+        {'version':version,
+        'client_stats':client_stats,
+        'cache_stats': cache_stats,
+        'backend_stats': backend_stats,
+        'memory_stats': memory_stats,
+        'page': 'index'})
+
 def tablestats_view(request):
     stats = varnish_stats()
     return render_to_response('frontend/table.html', {'varnish_stats':stats})

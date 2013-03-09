@@ -1,0 +1,59 @@
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+<script type="text/javascript">
+    
+    function drawCharts(){
+        // Gauge cachehitrate
+        var data_hitrate = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['HitRate', {{ cache_stats.Hitrate }}]
+        ]);
+        
+        chart_hitrate = new google.visualization.Gauge(document.getElementById('hitrate_div')).draw(data_hitrate,
+            {
+            width: 400, height: 120,
+            redFrom: 0, redTo: 20,
+            yellowFrom:20, yellowTo: 40,
+            greenFrom:80, greenTo: 100,
+            minorTicks: 5
+            }
+            );
+
+        var data_memory = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['MemTotal', {{ memory_stats.Bytes_allocated }}]
+        ]);
+
+        chart_memory = new google.visualization.Gauge(document.getElementById('memory_div')).draw(data_memory,
+            {
+            width: 400, height: 120,
+            // redFrom: 220 , redTo: 250,
+            // yellowFrom:70, yellowTo: 90,
+            // greenFrom:00, greenTo: 30,
+            minorTicks: 5,
+            max: {{ memory_stats.Bytes_available }}
+            }
+            );
+
+        // Barchart requests-hits-misses
+        var data_hitrequest = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['Cache Hits', {{ cache_stats.Cache_Hits }}],
+            ['Cache Misses', {{ cache_stats.Cache_Misses }}],
+            ['Requests', {{ client_stats.Client_Requests }}]
+        ]);
+        new google.visualization.ColumnChart(document.getElementById('hitrequest_div')).
+      draw(data_hitrequest,
+           {title:"Hits - Misses - Requests",
+            width:600, height:400,
+            }
+      );
+    }
+    
+    google.setOnLoadCallback(drawCharts);
+    google.load("visualization", "1", {packages:["corechart","gauge",]});
+</script>
+<div id="dashboard">
+    <div id="hitrate_div" style="left: 20%; width: 140px; position: fixed;"></div>
+    <div id="memory_div" style="left: 20%; width: 140px; position: relative;"></div>
+    <div id="hitrequest_div" style="height: 450px;"></div>
+</div>
