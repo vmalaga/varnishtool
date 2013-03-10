@@ -20,10 +20,11 @@ Is better to work with virtualenv and use the use of virtualenvwrapper is easy
 # (djvaradm)# ./manage.py syncdb
 ```
 
-Run APP
+Run APP with Gunicorn
 -------
 if you want to run the app in real webserver, use the gunicorn with -D to run as daemon
 ```
+# ./manage.py collectstatic
 # ./manage.py run_gunicorn --bind=0.0.0.0:8000 --error-logfile=/var/log/gunicorn.log -D
 ```
 
