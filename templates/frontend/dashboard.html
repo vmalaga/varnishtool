@@ -1,14 +1,11 @@
 <script type='text/javascript' src='https://www.google.com/jsapi'></script>
 <script type="text/javascript">
     
-    
-
     function drawCharts(){
         // Init stats db
         var db = openDatabase('STATSDB', '1.0', 'Stats DB', 100 * 1024);
         db.transaction(function(tx) {
             tx.executeSql("create table if not exists stats(date TIMESTAMP DEFAULT (datetime('now','localtime')), statname TEXT, value INTEGER DEFAULT 0)");
-        // tx.executeSql("insert into People(id, name, age) values (1, "Marujita", 105)');
         });
 
         // Gauge cachehitrate
@@ -69,9 +66,17 @@
 
         setInterval(function() {
             $.get("/api/cache_stats/", function(data) {
+                
+                // executeSQL('SELECT title FROM movies WHERE id = ?', [id]);
                 hitmiss_data.setValue(0, 1, parseInt(data.Cache_Hits));
                 hitmiss_data.setValue(1, 1, parseInt(data.Cache_Misses));
                 hitmiss_chart.draw(hitmiss_data, hitmiss_options);
+                db.transaction(function(tx) {
+                    var hits = parseInt(data.Cache_Hits);
+                    var miss = parseInt(data.Cache_Misses);
+                    tx.executeSql("insert into stats(statname, value) values ('cache_hits', ?)",[hits]);
+                    tx.executeSql("insert into stats(statname, value) values ('cache_misses', ?)",[miss]);
+                });
             }, "json");
             }, 5000);
 
@@ -92,8 +97,37 @@
             $.get("/api/cache_stats/", function(data) {
                 request_data.setValue(0, 1, parseInt(data.Client_Requests));
                 request_chart.draw(request_data, request_options);
+                db.transaction(function(tx) {
+                    var reqs = parseInt(data.Client_Requests);
+                    tx.executeSql("insert into stats(statname, value) values ('client_requests', ?)",[reqs]);
+                });
             }, "json");
             }, 5000);
+
+        // Line chart Client requests with websql history
+        var statsarray = new Array();
+        db.transaction(function (tx) {
+            tx.executeSql('SELECT date, value FROM stats where statname="client_requests"', [], 
+                function (tx, results) {
+                    var len = results.rows.length, i;
+                    
+                    for (i = 0; i < len; i++){
+                        statsarray[i] = {statname: results.rows.item(i)[0], value: results.rows.item(i)[1]};
+                    }
+                }, null);
+        });
+        var data = google.visualization.arrayToDataTable([
+            statsarray
+        ]);
+        var reqline_chart =new google.visualization.LineChart(document.getElementById('reqline_div'));
+        reqline_chart.draw(data, {
+            curveType: "function",
+            width: 500, height: 400,
+            vAxis: {maxValue: 10}
+            }
+        );
+
+    
     }
     
     google.setOnLoadCallback(drawCharts);
@@ -107,4 +141,5 @@
     <div id="memory_div" style="left: 20%; width: 140px; position: relative;"></div>
     <div id="hitrequest_div"></div>
     <div id="req_div"></div>
+    <div id="reqline_div"></div>"
 </div>
