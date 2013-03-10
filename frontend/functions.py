@@ -43,6 +43,7 @@ class varnish_stats():
         self.cache_stats = {"Cache_Hits": self.stats_dict['cache_hit'],
         "Cache_Misses": self.stats_dict['cache_miss'],
         "Cache_Hit_for_pass": self.stats_dict['cache_hitpass'],
+        "Client_Requests": self.stats_dict['client_req'],
         "Hitrate": hitrate}
         return self.cache_stats
 

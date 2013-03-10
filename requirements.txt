@@ -8,3 +8,4 @@ gunicorn
 django-debug-toolbar
 pyxml
 django-extensions
+simplejson

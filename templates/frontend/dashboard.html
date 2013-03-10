@@ -1,14 +1,23 @@
 <script type='text/javascript' src='https://www.google.com/jsapi'></script>
 <script type="text/javascript">
     
+    
+
     function drawCharts(){
+        // Init stats db
+        var db = openDatabase('STATSDB', '1.0', 'Stats DB', 100 * 1024);
+        db.transaction(function(tx) {
+            tx.executeSql("create table if not exists stats(date TIMESTAMP DEFAULT (datetime('now','localtime')), statname TEXT, value INTEGER DEFAULT 0)");
+        // tx.executeSql("insert into People(id, name, age) values (1, "Marujita", 105)');
+        });
+
         // Gauge cachehitrate
-        var data_hitrate = google.visualization.arrayToDataTable([
+        var hitrate_data = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
-            ['HitRate', {{ cache_stats.Hitrate }}]
+            ['HitRate %', {{ cache_stats.Hitrate }}]
         ]);
 
-        var options_hitrate = {
+        var hitrate_options = {
             width: 400, height: 120,
             redFrom: 0, redTo: 20,
             yellowFrom:20, yellowTo: 40,
@@ -16,22 +25,22 @@
             minorTicks: 5
             }
         
-        var chart_hitrate = new google.visualization.Gauge(document.getElementById('hitrate_div'))
-        chart_hitrate.draw(data_hitrate, options_hitrate);
+        var hitrate_chart = new google.visualization.Gauge(document.getElementById('hitrate_div'));
+        hitrate_chart.draw(hitrate_data, hitrate_options);
         setInterval(function() {
             $.get("/api/cache_stats/", function(data) {
-                data_hitrate.setValue(0,1, data.Hitrate);
-                chart_hitrate.draw(data_hitrate, options_hitrate);
+                hitrate_data.setValue(0,1, data.Hitrate);
+                hitrate_chart.draw(hitrate_data, hitrate_options);
             }, "json");
             }, 5000);
 
 
-        var data_memory = google.visualization.arrayToDataTable([
+        var memory_data = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
-            ['MemTotal', {{ memory_stats.MBytes_allocated }}]
+            ['Memory Usage', {{ memory_stats.MBytes_allocated }}]
         ]);
 
-        chart_memory = new google.visualization.Gauge(document.getElementById('memory_div')).draw(data_memory,
+        memory_chart = new google.visualization.Gauge(document.getElementById('memory_div')).draw(memory_data,
             {
             width: 400, height: 120,
             // redFrom: 220 , redTo: 250,
@@ -42,27 +51,60 @@
             }
             );
 
-        // Barchart requests-hits-misses
-        var data_hitrequest = google.visualization.arrayToDataTable([
+        // Barchart hits-misses
+        var hitmiss_options = {
+            title:"Hits - Misses",
+            width:600, height:200,
+            legend: 'none',
+            colors: ['green'],
+            // vAxis: {title: 'HITS',  titleTextStyle: {color: 'red'}},
+        }
+        var hitmiss_data = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
             ['Cache Hits', {{ cache_stats.Cache_Hits }}],
-            ['Cache Misses', {{ cache_stats.Cache_Misses }}],
-            ['Requests', {{ client_stats.Client_Requests }}]
+            ['Cache Misses', {{ cache_stats.Cache_Misses }}]
         ]);
-        new google.visualization.ColumnChart(document.getElementById('hitrequest_div')).
-      draw(data_hitrequest,
-           {title:"Hits - Misses - Requests",
-            width:600, height:400,
-            }
-      );
+        var hitmiss_chart = new google.visualization.ColumnChart(document.getElementById('hitrequest_div'));
+        hitmiss_chart.draw(hitmiss_data, hitmiss_options);
+
+        setInterval(function() {
+            $.get("/api/cache_stats/", function(data) {
+                hitmiss_data.setValue(0, 1, parseInt(data.Cache_Hits));
+                hitmiss_data.setValue(1, 1, parseInt(data.Cache_Misses));
+                hitmiss_chart.draw(hitmiss_data, hitmiss_options);
+            }, "json");
+            }, 5000);
+
+        // Barchart client request
+        var request_options = {
+            title:"Client Requests",
+            width:600, height:200,
+            legend: 'none'
+        }
+        var request_data = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['Client Requests', {{ cache_stats.Client_Requests }}]
+        ]);
+        var request_chart = new google.visualization.ColumnChart(document.getElementById('req_div'));
+        request_chart.draw(request_data, request_options);
+
+        setInterval(function() {
+            $.get("/api/cache_stats/", function(data) {
+                request_data.setValue(0, 1, parseInt(data.Client_Requests));
+                request_chart.draw(request_data, request_options);
+            }, "json");
+            }, 5000);
     }
     
     google.setOnLoadCallback(drawCharts);
     google.load("visualization", "1", {packages:["corechart","gauge",]});
+
+    
 </script>
 
 <div id="dashboard">
     <div id="hitrate_div" style="left: 20%; width: 140px; position: fixed;"></div>
     <div id="memory_div" style="left: 20%; width: 140px; position: relative;"></div>
-    <div id="hitrequest_div" style="height: 450px;"></div>
+    <div id="hitrequest_div"></div>
+    <div id="req_div"></div>
 </div>

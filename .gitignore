@@ -8,3 +8,4 @@ djvaradm.dbf
 local_settings.py
 conf/local_settings.py
 .tags*
+sftp-config.json

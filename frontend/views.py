@@ -36,6 +36,8 @@ def api_view(request,statname):
         result = stats.backend_st()
     elif statname == "memory_stats":
         result = stats.memory_st()
+    else:
+        result = ""
     return HttpResponse(json.dumps(result), mimetype="application/json")
 
 def vcledit_view(request):
