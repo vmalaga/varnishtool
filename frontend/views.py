@@ -53,3 +53,7 @@ def logout_page(request):
     return HttpResponseRedirect('/')
 
 
+def test_view(request):
+    return render_to_response('frontend/test.html',
+        {'page': 'index'}
+        )

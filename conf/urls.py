@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     ('^$', 'frontend.views.index_view'),
     (r'^vcledit/$', 'frontend.views.vcledit_view'),
     (r'^api/(?P<statname>\w+)/$', 'frontend.views.api_view'),
+    (r'^test/$', 'frontend.views.test_view'),
     
     # Login / logout.
     (r'^login/$', 'django.contrib.auth.views.login'),

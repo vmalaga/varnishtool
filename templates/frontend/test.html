@@ -1,0 +1,8 @@
+<script src="/static/jquery.min.js"></script>
+<script type="text/javascript" src="/static/ydn.db-jquery-0.2.4.js"></script>
+<script type="text/javascript">
+	db = new ydn.db.Storage('STATSDB');
+	db.values('stats', null, 10).done(function(records) {
+		console.log(records);
+	});
+</script>
