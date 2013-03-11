@@ -18,11 +18,7 @@
         }]
         };
         var db = new ydn.db.Storage('STATSDB');
-        // var db = openDatabase('STATSDB', '1.0', 'Stats DB', 100 * 1024);
-        // db.transaction(function(tx) {
-        //     tx.executeSql("create table if not exists stats(date TIMESTAMP DEFAULT (datetime('now','localtime')), statname TEXT, value INTEGER DEFAULT 0)");
-        // });
-
+        
         // Gauge cachehitrate
         var hitrate_data = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
@@ -69,7 +65,6 @@
             width:600, height:200,
             legend: 'none',
             colors: ['green'],
-            // vAxis: {title: 'HITS',  titleTextStyle: {color: 'red'}},
         }
         var hitmiss_data = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
@@ -81,20 +76,13 @@
 
         setInterval(function() {
             $.get("/api/cache_stats/", function(data) {
-                
                 hitmiss_data.setValue(0, 1, parseInt(data.Cache_Hits));
                 hitmiss_data.setValue(1, 1, parseInt(data.Cache_Misses));
                 hitmiss_chart.draw(hitmiss_data, hitmiss_options);
-                // db.transaction(function(tx) {
-                //     var hits = parseInt(data.Cache_Hits);
-                //     var miss = parseInt(data.Cache_Misses);
-                //     tx.executeSql("insert into stats(statname, value) values ('cache_hits', ?)",[hits]);
-                //     tx.executeSql("insert into stats(statname, value) values ('cache_misses', ?)",[miss]);
-                // });
-                var d = new Date();
-                recordhist = { date: d, statname: 'cache_hits', value: data.Cache_Hits };
+                var now = new Date();
+                recordhist = { date: now, statname: 'cache_hits', value: data.Cache_Hits };
                 db.put({name: 'STATSDB', keyPath: 'date'}, recordhist);
-                recordmiss = { date: d, statname: 'cache_miss', value: data.Cache_Misses };
+                recordmiss = { date: now, statname: 'cache_miss', value: data.Cache_Misses };
                 db.put({name: 'STATSDB', keyPath: 'date'}, recordmiss);
             }, "json");
         }, 5000);
@@ -116,12 +104,8 @@
             $.get("/api/cache_stats/", function(data) {
                 request_data.setValue(0, 1, parseInt(data.Client_Requests));
                 request_chart.draw(request_data, request_options);
-                // db.transaction(function(tx) {
-                //     var reqs = parseInt(data.Client_Requests);
-                //     tx.executeSql("insert into stats(statname, value) values ('client_requests', ?)",[reqs]);
-                // });
-                var d = new Date();
-                recordclireq = { date: d, statname: 'client_requests', value: data.Client_Requests };
+                var now = new Date();
+                recordclireq = { date: now, statname: 'client_requests', value: data.Client_Requests };
                 db.put({name: 'STATSDB', keyPath: 'date'}, recordclireq);
             }, "json");
         }, 5000);
