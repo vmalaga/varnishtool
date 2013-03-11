@@ -1,8 +1,37 @@
 <script src="/static/jquery.min.js"></script>
 <script type="text/javascript" src="/static/ydn.db-jquery-0.2.4.js"></script>
 <script type="text/javascript">
-	db = new ydn.db.Storage('STATSDB');
-	db.values('stats', null, 10).done(function(records) {
-		console.log(records);
-	});
+	// Init stats db
+        var schema = {
+            stores:[{
+                name:'stats',
+                keyPath:'timeStamp',
+                type: 'TEXT',
+                indexes: [
+                {
+                	keyPath: 'statname',
+                	type: 'TEXT'
+                }
+    		]
+        }]
+        };
+        var db = new ydn.db.Storage('STATSDB');
+        var d = new Date();
+        record = {date: d, statname: 'cache_hits', value: 65};
+        req = db.put({name: 'STATSDB', keyPath: 'date'}, record);
+        req.done(function(key) {
+        	console.log(key);
+        });
+        req.fail(function(e) {
+        	throw e;
+        });
+	
+        db.values('STATSDB', null, 10).done(function(records) {
+        	console.log(records);
+        });
+
+        db.keys('STATSDB', null, 10).done(function(records) {
+        	console.log(records);
+        });
+
 </script>
