@@ -26,7 +26,7 @@
         ]);
 
         var hitrate_options = {
-            width: 400, height: 120,
+            width: 200, height: 120,
             redFrom: 0, redTo: 20,
             yellowFrom:20, yellowTo: 40,
             greenFrom:80, greenTo: 100,
@@ -80,10 +80,35 @@
                 hitmiss_data.setValue(1, 1, parseInt(data.Cache_Misses));
                 hitmiss_chart.draw(hitmiss_data, hitmiss_options);
                 var now = new Date();
-                recordhist = { date: now, statname: 'cache_hits', value: data.Cache_Hits };
-                db.put({name: 'STATSDB', keyPath: 'date'}, recordhist);
-                recordmiss = { date: now, statname: 'cache_miss', value: data.Cache_Misses };
-                db.put({name: 'STATSDB', keyPath: 'date'}, recordmiss);
+                recordhist = {
+                    date: now,
+                    statname: 'cache_hits',
+                    value: data.Cache_Hits
+                };
+                recordmiss = {
+                    date: now,
+                    statname: 'cache_miss',
+                    value: data.Cache_Misses
+                };
+
+                req = db.put('STATSDB', [ recordhist, recordmiss ] );
+                // db.put({name: 'STATSDB', keyPath: 'date'}, recordhist);
+                
+                // db.put({name: 'STATSDB', keyPath: 'date'}, recordmiss);
+                // records = [
+                //     { date: now, statname: 'cache_hits', value: data.Cache_Hits },
+                //     { date: now, statname: 'cache_miss', value: data.Cache_Misses },
+                // ];
+                // req = db.put({name: 'STATSDB', keyPath: 'date'}, records);
+                // db.put( [{name: 'STATSDB', keyPath: 'date' }, recordhist , {name: 'STATSDB', keyPath: 'date' }, recordmiss ] );
+                // req = db.put( 'STATSDB', [ recordhist, recordmiss ] );
+                req.done(function(key) {
+                    console.log(key);
+                });
+                req.fail(function(e) {
+                    throw e;
+                });
+                // db.put('STATSDB', [ { date: now, statname: 'cache_hits', value: data.Cache_Hits }, { date: now, statname: 'cache_miss', value: data.Cache_Misses } ])
             }, "json");
         }, 5000);
 
@@ -105,8 +130,8 @@
                 request_data.setValue(0, 1, parseInt(data.Client_Requests));
                 request_chart.draw(request_data, request_options);
                 var now = new Date();
-                recordclireq = { date: now, statname: 'client_requests', value: data.Client_Requests };
-                db.put({name: 'STATSDB', keyPath: 'date'}, recordclireq);
+                // recordclireq = { date: now, statname: 'client_requests', value: data.Client_Requests };
+                // db.put({name: 'STATSDB', keyPath: 'date'}, recordclireq);
             }, "json");
         }, 5000);
 
