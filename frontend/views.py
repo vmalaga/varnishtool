@@ -54,6 +54,17 @@ def logout_page(request):
 
 
 def test_view(request):
+    version = varnishVersion()
+    stats = varnish_stats()
+    stats.get_stats()
+    client_stats = stats.client_st()
+    cache_stats = stats.cache_st()
+    backend_stats = stats.backend_st()
+    memory_stats = stats.memory_st()
     return render_to_response('frontend/test.html',
-        {'page': 'index'}
-        )
+        {'version':version,
+        'client_stats':client_stats,
+        'cache_stats': cache_stats,
+        'backend_stats': backend_stats,
+        'memory_stats': memory_stats,
+        'page': 'index'})

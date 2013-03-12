@@ -1,37 +1,108 @@
-<script src="/static/jquery.min.js"></script>
-<script type="text/javascript" src="/static/ydn.db-jquery-0.2.4.js"></script>
-<script type="text/javascript">
+<html>
+<head>
+	<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+	<script src="/static/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/visualize.jQuery.js"></script>	
+	<script type="text/javascript">
+		$('table').visualize();
+	</script>
+	<script type="text/javascript">
+      google.load('visualization', '1', {packages: ['corechart']});
+    </script>
+	<script type="text/javascript">
 	// Init stats db
-        var schema = {
-            stores:[{
-                name:'stats',
-                keyPath:'timeStamp',
-                type: 'TEXT',
-                indexes: [
-                {
-                	keyPath: 'statname',
-                	type: 'TEXT'
-                }
-    		]
-        }]
-        };
-        var db = new ydn.db.Storage('STATSDB');
-        var d = new Date();
-        record = {date: d, statname: 'cache_hits', value: 65};
-        req = db.put({name: 'STATSDB', keyPath: 'date'}, record);
-        req.done(function(key) {
-        	console.log(key);
-        });
-        req.fail(function(e) {
-        	throw e;
-        });
+		var db = openDatabase('STATSDB', '1.0', 'Stats DB', 10 * 1024);
+		var statsarray = [];
+		db.transaction(function(tx) {
+			var hits = parseInt( {{ cache_stats.Cache_Hits }} );
+			var miss = parseInt( {{ cache_stats.Cache_Misses }} );
+			var query = "select * from stats where statname='client_requests'"
+			tx.executeSql( query , [] , function (tx, results) {
+				var len = results.rows.length, i;
+				
+				for (i = 0; i < len; i++) {
+					console.log("statdate: " + results.rows.item(i).statdate +
+						" statname: " + results.rows.item(i).statname +
+						" statvalue: " + results.rows.item(i).statvalue
+						);
+					statsarray[i] = [results.rows.item(i).statdate, parseInt(results.rows.item(i).statvalue)];
+				}
+			});
+		});
+
+		function drawVisualization() {
+			// Create and populate the data table.
+			  // var data = google.visualization.arrayToDataTable([
+			  //   ['x', 'Cats'],
+			  //   ['A',   1],
+			  //   ['B',   2],
+			  //   ['C',   4],
+			  //   ['D',   8],
+			  //   ['E',   7],
+			  //   ['F',   7],
+			  //   ['G',   8],
+			  //   ['H',   4],
+			  //   ['I',   2],
+			  //   ['J',   3.5],
+			  //   ['K',   3],
+			  //   ['L',   3.5],
+			  //   ['M',   1],
+			  //   ['N',   1]
+			  // ]);
+			var data = google.visualization.arrayToDataTable([ statsarray ]);
+			  // Create and draw the visualization.
+			  new google.visualization.LineChart(document.getElementById('linegraph')).
+			      draw(data, {curveType: "function",
+			                  width: 500, height: 400,
+			                  vAxis: {maxValue: 10}}
+			          );
+			}
+			    
+			   // google.setOnLoadCallback(drawVisualization); 
+	</script>
+
 	
-        db.values('STATSDB', null, 10).done(function(records) {
-        	console.log(records);
-        });
+	
 
-        db.keys('STATSDB', null, 10).done(function(records) {
-        	console.log(records);
-        });
 
-</script>
+</head>
+<body>
+	<div id="linegraph"></div>
+
+	<table>
+	<caption>2009 Employee Sales by Department</caption>
+	<thead>
+		<tr>
+			<td></td>
+			<th scope="col">food</th>
+			<th scope="col">auto</th>
+			<th scope="col">household</th>
+			<th scope="col">furniture</th>
+			<th scope="col">kitchen</th>
+			<th scope="col">bath</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<th scope="row">Mary</th>
+			<td>190</td>
+			<td>160</td>
+			<td>40</td>
+			<td>120</td>
+			<td>30</td>
+			<td>70</td>
+		</tr>
+		<tr>
+			<th scope="row">Tom</th>
+			<td>3</td>
+			<td>40</td>
+			<td>30</td>
+			<td>45</td>
+			<td>35</td>
+			<td>49</td>
+		</tr>
+	</tbody>
+</table>
+
+</body>
+</html>
