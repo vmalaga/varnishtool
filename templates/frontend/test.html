@@ -1,108 +1,114 @@
 <html>
 <head>
-	<script type='text/javascript' src='https://www.google.com/jsapi'></script>
-	<script src="/static/jquery.min.js"></script>
-	<script type="text/javascript" src="/static/visualize.jQuery.js"></script>	
-	<script type="text/javascript">
-		$('table').visualize();
-	</script>
-	<script type="text/javascript">
-      google.load('visualization', '1', {packages: ['corechart']});
-    </script>
 	<script type="text/javascript">
 	// Init stats db
-		var db = openDatabase('STATSDB', '1.0', 'Stats DB', 10 * 1024);
-		var statsarray = [];
-		db.transaction(function(tx) {
-			var hits = parseInt( {{ cache_stats.Cache_Hits }} );
-			var miss = parseInt( {{ cache_stats.Cache_Misses }} );
-			var query = "select * from stats where statname='client_requests'"
-			tx.executeSql( query , [] , function (tx, results) {
-				var len = results.rows.length, i;
+		// var db = openDatabase('STATSDB', '1.0', 'Stats DB', 10 * 1024);
+		// var statsarray = [];
+		// db.transaction(function(tx) {
+		// 	var hits = parseInt( {{ cache_stats.Cache_Hits }} );
+		// 	var miss = parseInt( {{ cache_stats.Cache_Misses }} );
+		// 	var query = "select * from stats where statname='client_requests'"
+		// 	tx.executeSql( query , [] , function (tx, results) {
+		// 		var len = results.rows.length, i;
 				
-				for (i = 0; i < len; i++) {
-					console.log("statdate: " + results.rows.item(i).statdate +
-						" statname: " + results.rows.item(i).statname +
-						" statvalue: " + results.rows.item(i).statvalue
-						);
-					statsarray[i] = [results.rows.item(i).statdate, parseInt(results.rows.item(i).statvalue)];
+		// 		for (i = 0; i < len; i++) {
+		// 			console.log("statdate: " + results.rows.item(i).statdate +
+		// 				" statname: " + results.rows.item(i).statname +
+		// 				" statvalue: " + results.rows.item(i).statvalue
+		// 				);
+		// 			statsarray[i] = [results.rows.item(i).statdate, parseInt(results.rows.item(i).statvalue)];
+		// 		}
+		// 	});
+		// });
+		   // google.setOnLoadCallback(drawVisualization); 
+	</script>
+	<script src="/static/jquery.min.js"></script>
+	<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+
+	<script type="text/javascript">
+	$(function () {
+		$(document).ready(function() {
+			Highcharts.setOptions({
+				global: {
+					useUTC: false
 				}
 			});
-		});
-
-		function drawVisualization() {
-			// Create and populate the data table.
-			  // var data = google.visualization.arrayToDataTable([
-			  //   ['x', 'Cats'],
-			  //   ['A',   1],
-			  //   ['B',   2],
-			  //   ['C',   4],
-			  //   ['D',   8],
-			  //   ['E',   7],
-			  //   ['F',   7],
-			  //   ['G',   8],
-			  //   ['H',   4],
-			  //   ['I',   2],
-			  //   ['J',   3.5],
-			  //   ['K',   3],
-			  //   ['L',   3.5],
-			  //   ['M',   1],
-			  //   ['N',   1]
-			  // ]);
-			var data = google.visualization.arrayToDataTable([ statsarray ]);
-			  // Create and draw the visualization.
-			  new google.visualization.LineChart(document.getElementById('linegraph')).
-			      draw(data, {curveType: "function",
-			                  width: 500, height: 400,
-			                  vAxis: {maxValue: 10}}
-			          );
-			}
-			    
-			   // google.setOnLoadCallback(drawVisualization); 
+    
+        var chart;
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container',
+                type: 'spline',
+                marginRight: 10,
+                events: {
+                    load: function() {
+    
+                        // set up the updating of the chart each second
+                        var series = this.series[0];
+                        setInterval(function() {
+                            var x = (new Date()).getTime(), // current time
+                                y = Math.random();
+                            series.addPoint([x, y], true, true);
+                        }, 5000);
+                    }
+                }
+            },
+            title: {
+                text: 'Client Requests'
+            },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150
+            },
+            yAxis: {
+                title: {
+                    text: 'Requests/s'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        Highcharts.dateFormat('%d-%m-%Y %H:%M:%S', this.x) +'<br/>'+
+                        Highcharts.numberFormat(this.y, 2);
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            series: [{
+                name: 'Client Requests per second',
+                data: (function() {
+                    // generate an array of random data
+                    var data = [],
+                        time = (new Date()).getTime(),
+                        i;
+    
+                    for (i = -19; i <= 0; i++) {
+                        data.push({
+                            x: time + i * 5000,
+                            y: Math.random()
+                        });
+                    }
+                    return data;
+                })()
+            }]
+        });
+    });
+});
 	</script>
-
-	
-	
-
 
 </head>
 <body>
-	<div id="linegraph"></div>
-
-	<table>
-	<caption>2009 Employee Sales by Department</caption>
-	<thead>
-		<tr>
-			<td></td>
-			<th scope="col">food</th>
-			<th scope="col">auto</th>
-			<th scope="col">household</th>
-			<th scope="col">furniture</th>
-			<th scope="col">kitchen</th>
-			<th scope="col">bath</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<th scope="row">Mary</th>
-			<td>190</td>
-			<td>160</td>
-			<td>40</td>
-			<td>120</td>
-			<td>30</td>
-			<td>70</td>
-		</tr>
-		<tr>
-			<th scope="row">Tom</th>
-			<td>3</td>
-			<td>40</td>
-			<td>30</td>
-			<td>45</td>
-			<td>35</td>
-			<td>49</td>
-		</tr>
-	</tbody>
-</table>
-
+<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 </body>
 </html>
