@@ -1,10 +1,6 @@
 // Connect to stats db
 var db = openDatabase('STATSDB', '1.0', 'Stats DB', 10 * 1024);
 var chart;
-// var deltavalue;
-
-
-
 
 $(document).ready(function() {
     Highcharts.setOptions({
@@ -17,11 +13,11 @@ $(document).ready(function() {
         chart: {
             renderTo: 'container',
             type: 'spline',
-            marginRight: 10,
+            marginRight: 0,
             events: {
                 load: function() {
 
-                    // set up the updating of the chart each second
+                    // set up the updating of the chart each 5 seconds
                     var series = this.series[0];
                     setInterval(function() {
                            // get delta value from websql
@@ -36,13 +32,6 @@ $(document).ready(function() {
                                     // console.log("X: " + x + " Now:" + nowvalue + " Last: " + lastvalue " Delta: " + deltavalue);
                                 });
                             });
-                        
-                        
-                        
-                        // 
-                        //     // y = getDelta();
-                        //     y = Math.random();
-                        // 
                     }, 5000);
                 }
             }
@@ -57,14 +46,15 @@ $(document).ready(function() {
         },
         yAxis: {
             title: {
-                text: 'Requests/s',
+                text: 'Requests',
                 margin: 20
             },
             plotLines: [{
                 value: 0,
                 width: 1,
                 color: '#808080'
-            }]
+            }],
+            min: 0
         },
         tooltip: {
             formatter: function() {
@@ -80,7 +70,7 @@ $(document).ready(function() {
             enabled: false
         },
         series: [{
-            name: 'Random data',
+            name: 'Requests',
             data: (function() {
                     // generate an array of random data
                     var data = [],
@@ -90,7 +80,7 @@ $(document).ready(function() {
                     for (i = -19; i <= 0; i++) {
                         data.push({
                             x: time + i * 1000,
-                            y: Math.random()
+                            y: 0
                         });
                     }
                     return data;

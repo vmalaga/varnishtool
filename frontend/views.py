@@ -67,4 +67,4 @@ def reqps_view(request):
         'cache_stats': cache_stats,
         'backend_stats': backend_stats,
         'memory_stats': memory_stats,
-        'page': 'index'})
+        'page': 'reqps'})
