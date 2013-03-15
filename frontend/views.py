@@ -53,7 +53,7 @@ def logout_page(request):
     return HttpResponseRedirect('/')
 
 
-def test_view(request):
+def reqps_view(request):
     version = varnishVersion()
     stats = varnish_stats()
     stats.get_stats()
@@ -61,7 +61,7 @@ def test_view(request):
     cache_stats = stats.cache_st()
     backend_stats = stats.backend_st()
     memory_stats = stats.memory_st()
-    return render_to_response('frontend/test.html',
+    return render_to_response('frontend/reqps.html',
         {'version':version,
         'client_stats':client_stats,
         'cache_stats': cache_stats,

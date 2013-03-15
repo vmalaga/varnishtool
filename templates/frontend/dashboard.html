@@ -106,30 +106,7 @@
             }, "json");
             }, 5000);
 
-        // Line chart Client requests with websql history
-        var statsarray = new Array();
-        db.transaction(function (tx) {
-            tx.executeSql('SELECT statdate, value FROM stats where statname="client_requests"', [], 
-                function (tx, results) {
-                    var len = results.rows.length, i;
-                    
-                    for (i = 0; i < len; i++){
-                        statsarray[i] = {statname: results.rows.item(i)[0], value: results.rows.item(i)[1]};
-                    }
-                }, null);
-        });
-        var data = google.visualization.arrayToDataTable([
-            statsarray
-        ]);
-        var reqline_chart =new google.visualization.LineChart(document.getElementById('reqline_div'));
-        reqline_chart.draw(data, {
-            curveType: "function",
-            width: 500, height: 400,
-            vAxis: {maxValue: 10}
-            }
-        );
-
-    
+            
     }
     
     google.setOnLoadCallback(drawCharts);
