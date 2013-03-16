@@ -29,7 +29,7 @@ $(document).ready(function() {
                                     var deltavalue = nowvalue - lastvalue;
                                     var x = (new Date()).getTime() // current time
                                     series.addPoint([x, deltavalue], true, true);
-                                    // console.log("X: " + x + " Now:" + nowvalue + " Last: " + lastvalue " Delta: " + deltavalue);
+                                    console.log(deltavalue);
                                 });
                             });
                     }, 5000);
@@ -60,7 +60,7 @@ $(document).ready(function() {
             formatter: function() {
                     return '<b>'+ this.series.name +'</b><br/>'+
                     Highcharts.dateFormat('%d-%m-%Y %H:%M:%S', this.x) +'<br/>'+
-                    Highcharts.numberFormat(this.y, 2);
+                    Highcharts.numberFormat(this.y, 0);
             }
         },
         legend: {

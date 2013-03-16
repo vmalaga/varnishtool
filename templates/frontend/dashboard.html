@@ -34,7 +34,7 @@ function drawCharts(){
         ['Memory Usage', {{ memory_stats.MBytes_allocated }}]
     ]);
 
-    memory_chart = new google.visualization.Gauge(document.getElementById('memory_div')).draw(memory_data,
+    memory_chart = new google.visualization.Gauge(document.getElementById('memusage_div')).draw(memory_data,
         {
         width: 400, height: 120,
         minorTicks: 5,
@@ -42,33 +42,35 @@ function drawCharts(){
         }
         );
 
-    // Barchart hits-misses
+    // Piechart hits-misses
     var hitmiss_options = {
-        title:"Hits - Misses",
-            width:600, height:200,
-        legend: 'none',
-        colors: ['green'],
-        // vAxis: {title: 'HITS',  titleTextStyle: {color: 'red'}},
+	title:"Hits - Misses",
+	      is3D: true,
+	      legend: {
+		position: 'top'
+	      },
+	width: 300, heigth: 200
     }
     var hitmiss_data = google.visualization.arrayToDataTable([
-        ['Label', 'Value'],
+        ['Statname', 'Value'],
         ['Cache Hits', {{ cache_stats.Cache_Hits }}],
-        ['Cache Misses', {{ cache_stats.Cache_Misses }}]
+        ['Cache Misses', {{ cache_stats.Cache_Misses }}],
+        ['Cache hit for Pass', {{ cache_stats.Cache_Hit_for_pass }}]
     ]);
-    var hitmiss_chart = new google.visualization.ColumnChart(document.getElementById('hitrequest_div'));
+    var hitmiss_chart = new google.visualization.PieChart(document.getElementById('hitmisspie_div'));
     hitmiss_chart.draw(hitmiss_data, hitmiss_options);
 
     // Barchart client request
     var request_options = {
-        title:"Client Requests",
-            width:600, height:200,
+        title:"Total client requests",
+            width:500,
         legend: 'none'
         }
     var request_data = google.visualization.arrayToDataTable([
         ['Label', 'Value'],
         ['Client Requests', {{ cache_stats.Client_Requests }}]
     ]);
-    var request_chart = new google.visualization.ColumnChart(document.getElementById('req_div'));
+    var request_chart = new google.visualization.ColumnChart(document.getElementById('total_request_div'));
     request_chart.draw(request_data, request_options);
 
     // Make the refresh of stats on graphs
@@ -92,7 +94,7 @@ function drawCharts(){
 
             });
         }, "json");
-        }, 5000);
+        }, 1000);
 }
 google.setOnLoadCallback(drawCharts);
 google.load("visualization", "1", {packages:["corechart","gauge",]});
@@ -101,16 +103,17 @@ google.load("visualization", "1", {packages:["corechart","gauge",]});
 <table>
     <tr>
         <td><div id="hitrate_div"></div></td>
-        <td><div id="memory_div"></div></td>
-        <td><div id="container" style="min-width: 500px; height: 150px; margin: 0 auto;"></div></td>
+        <td><div id="memusage_div"></div></td>
+	<td><a href="/reqps/"><div id="container" style="min-width: 500px; height: 150px; margin: 0 auto;"></div></a></td>
     </tr>
 </table>
-    <tr>
-        <div id="hitrequest_div"></div>
-    </tr>
-    <tr>
-        <div id="req_div"></div>
-    </tr>
-    <tr>
-        <div id="reqline_div"></div>
-    </tr>
+<table>
+	<tr>
+		<td>
+			<div id="hitmisspie_div"></div>
+		</td>
+		<td>
+			<div id="total_request_div"></div>
+		</td>
+	</tr>
+</table>
