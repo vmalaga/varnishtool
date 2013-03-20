@@ -1,7 +1,9 @@
-{% extends "base.html" %}
+{% extends "frontend/header.html" %}
+
 {% load i18n %}
 
 {% block head %}
+	{{ block.super }}
 		<script src="/static/jquery.min.js"></script>
 		<script src="http://code.highcharts.com/highcharts.js"></script>
 		<script src="http://code.highcharts.com/modules/exporting.js"></script>
@@ -9,5 +11,18 @@
 {% endblock %}
 
 {% block body %}
-		<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+	{{ block.super }}
+	 <!-- Left menu with stats results -->
+        <div class="tabbable tabs-left" id="stats">
+        	<ul class="nav nav-tabs">
+        		<li><a href="/">Dashboard</a></li>
+        		<li><a href="#tab2" data-toggle="tab">Statistics</a></li>
+        		<li class="active"><a href="/reqps/" >Client Requests</a></li>
+        	</ul>
+
+        	<div class="tab-content">
+        <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>		
+        	</div>
+        </div>
+		
 {% endblock %}

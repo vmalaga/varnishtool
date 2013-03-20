@@ -16,15 +16,17 @@ def conn_varnish():
         return varnish
         #sys.exit(255)
 
-class varnish_stats():
+class varnishStats():
     """Varnish stats class"""
     def get_stats(self):
         try:
-            varnish_stats = subprocess.check_output("varnishstat -1",
+            varnishStats = subprocess.check_output("varnishstat -1",
                 stderr=subprocess.STDOUT, 
                 shell=True).splitlines()
             
-            self.stats_dict = dict((line.split( )[0],line.split( )[1]) for line in varnish_stats)
+            self.stats_dict = dict((line.split( )[0],line.split( )[1]) for line in varnishStats)
+            self.stats_dict2 = dict(( ' '.join(line.split( )[3:]) ,line.split( )[1] ) for line in varnishStats)
+            return self.stats_dict2
             
         except subprocess.CalledProcessError:
             return "Error getting varnishstats on local machine"

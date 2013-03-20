@@ -1,0 +1,15 @@
+<table class="table">
+	<caption>Varnish Statistics</caption>
+	<thead>
+		<th>Statname</th>
+		<th>Value</th>
+	</thead>
+	<tbody>
+		{% for statname, value in allstats.items %}
+		<tr>
+			<td>{{ statname }}</td>
+			<td>{{ value }}</td>
+		</tr>
+        {% endfor %}
+	</tbody>
+</table>

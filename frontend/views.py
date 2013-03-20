@@ -10,7 +10,7 @@ from django.shortcuts import HttpResponse
 @login_required
 def index_view(request):
     version = varnishVersion()
-    stats = varnish_stats()
+    stats = varnishStats()
     stats.get_stats()
     client_stats = stats.client_st()
     cache_stats = stats.cache_st()
@@ -22,11 +22,12 @@ def index_view(request):
         'cache_stats': cache_stats,
         'backend_stats': backend_stats,
         'memory_stats': memory_stats,
+        'allstats': stats.get_stats(),
         'page': 'index'})
     
 import simplejson as json
 def api_view(request,statname):
-    stats = varnish_stats()
+    stats = varnishStats()
     stats.get_stats()
     if statname == "client_stats":
         result = stats.client_st()
@@ -36,6 +37,8 @@ def api_view(request,statname):
         result = stats.backend_st()
     elif statname == "memory_stats":
         result = stats.memory_st()
+    elif statname == "allstats":
+        result = stats.get_stats()
     else:
         result = ""
     return HttpResponse(json.dumps(result), mimetype="application/json")
@@ -55,7 +58,7 @@ def logout_page(request):
 
 def reqps_view(request):
     version = varnishVersion()
-    stats = varnish_stats()
+    stats = varnishStats()
     stats.get_stats()
     client_stats = stats.client_st()
     cache_stats = stats.cache_st()
