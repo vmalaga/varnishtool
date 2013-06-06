@@ -4,30 +4,29 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse
-
+import simplejson as json
 
 
 @login_required
 def index_view(request):
     version = varnishVersion()
-    stats = varnishStats()
+    stats = varnish_stats()
     stats.get_stats()
     client_stats = stats.client_st()
     cache_stats = stats.cache_st()
     backend_stats = stats.backend_st()
     memory_stats = stats.memory_st()
     return render_to_response('frontend/index.html',
-        {'version':version,
-        'client_stats':client_stats,
+        {'version': version,
+        'client_stats': client_stats,
         'cache_stats': cache_stats,
         'backend_stats': backend_stats,
         'memory_stats': memory_stats,
-        'allstats': stats.get_stats(),
         'page': 'index'})
-    
-import simplejson as json
-def api_view(request,statname):
-    stats = varnishStats()
+
+
+def api_view(request, statname):
+    stats = varnish_stats()
     stats.get_stats()
     if statname == "client_stats":
         result = stats.client_st()
@@ -43,22 +42,25 @@ def api_view(request,statname):
         result = ""
     return HttpResponse(json.dumps(result), mimetype="application/json")
 
+
 def vcledit_view(request):
     version = varnishVersion()
     vcltext = getVcl()
     return render_to_response('frontend/vcledit.html',
-        {'vcltext':vcltext,
+        {'vcltext': vcltext,
         'page': 'vcledit',
-        'version':version})
-    
+        'version': version})
+
+
 def logout_page(request):
     logout(request)
     return HttpResponseRedirect('/')
 
 
+
 def reqps_view(request):
     version = varnishVersion()
-    stats = varnishStats()
+    stats = varnish_stats()
     stats.get_stats()
     client_stats = stats.client_st()
     cache_stats = stats.cache_st()

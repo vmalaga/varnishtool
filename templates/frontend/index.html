@@ -8,8 +8,9 @@
         <div class="tabbable tabs-left" id="stats">
         	<ul class="nav nav-tabs">
         		<li class="active"><a href="#tab1" data-toggle="tab">Dashboard</a></li>
-        		<li><a href="#tab2" data-toggle="tab">Statistics</a></li>
-        		<li><a href="/reqps/" >Client Requests</a></li>
+        		<li><a href="#tab2" data-toggle="tab">Cache Hit</a></li>
+        		<li><a href="#tab3" data-toggle="tab">Backends Stats</a></li>
+        		<li><a href="#tab4" data-toggle="tab">All Stats</a></li>
         	</ul>
 
         	<div class="tab-content">
@@ -18,7 +19,11 @@
                     {% include "frontend/dashboard.html" %}
                 </div>
         		<div id="tab2" class="tab-pane">
-                    {% include "frontend/statsgrid.html" %}
+        			{% for statname, value in cache_stats.items %}
+        			<div class="well" style="max-width: 20%;">
+        				<strong>{{ statname }}</strong> {{ value }}
+        			</div>
+        			{% endfor %}
         		</div>
         		<div id="tab3" class="tab-pane">
         			{% for statname, value in backend_stats.items %}
@@ -27,6 +32,14 @@
         			</div>
         			{% endfor %}
         		</div>
+			<div id="tab4" class="tab-pane">
+				{% for statname, value in allstats.items %}
+				<tr>
+					<td>{{ statname }}</td><td>{{ value }}</td>
+				</tr>
+				{% endfor %}
+
+			</div>
         	</div>
         </div>
 

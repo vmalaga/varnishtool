@@ -1,4 +1,7 @@
 <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script src="/static/reqps.js"></script>
 <script type="text/javascript">
  // Init stats db
 var db = openDatabase('STATSDB', '1.0', 'Stats DB', 100 * 1024);
@@ -91,7 +94,7 @@ function drawCharts(){
 
             });
         }, "json");
-        }, 5000);
+        }, 1000);
 }
 google.setOnLoadCallback(drawCharts);
 google.load("visualization", "1", {packages:["corechart","gauge",]});
@@ -101,7 +104,16 @@ google.load("visualization", "1", {packages:["corechart","gauge",]});
     <tr>
         <td><div id="hitrate_div"></div></td>
         <td><div id="memusage_div"></div></td>
-        <td><div id="hitmisspie_div"></div></td>
+	<td><a href="/reqps/"><div id="container" style="min-width: 500px; height: 150px; margin: 0 auto;"></div></a></td>
     </tr>
 </table>
+<table>
+	<tr>
+		<td>
+			<div id="hitmisspie_div"></div>
+		</td>
+		<td>
 			<div id="total_request_div"></div>
+		</td>
+	</tr>
+</table>
