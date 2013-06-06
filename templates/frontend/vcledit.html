@@ -2,22 +2,60 @@
 
 {% block body %}
         {{ block.super }}
+        <!-- Left menu with stats results -->
+        <div class="tabbable tabs-left" id="stats">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab1" data-toggle="tab">Dashboard</a></li>
+                <li><a href="#tab2" data-toggle="tab">Cache Hit</a></li>
+                <li><a href="#tab3" data-toggle="tab">Backends Stats</a></li>
+                <li><a href="#tab4" data-toggle="tab">All Stats</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="tab1" class="tab-pane active">
+                    <!-- Show google charts -->
+                    {% include "frontend/dashboard.html" %}
+                </div>
+                <div id="tab2" class="tab-pane">
+                    {% for statname, value in cache_stats.items %}
+                    <div class="well" style="max-width: 20%;">
+                        <strong>{{ statname }}</strong> {{ value }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div id="tab3" class="tab-pane">
+                    {% for statname, value in backend_stats.items %}
+                    <div class="well" style="max-width: 20%;">
+                        <strong>{{ statname }}</strong> {{ value }}
+                    </div>
+                    {% endfor %}
+                </div>
+            <div id="tab4" class="tab-pane">
+                {% for statname, value in allstats.items %}
+                <tr>
+                    <td>{{ statname }}</td><td>{{ value }}</td>
+                </tr>
+                {% endfor %}
+
+            </div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <h2>VCL editor</h2>
+            <div class="control-group">
+                <label class="control-label" for="textarea">default.vcl</label>
+                <div class="controls">
+                    <textarea class="input-xxlarge" id="textarea" rows="20">
         {{ vcltext }}
-<div class="container">
-    <h2>VCL editor</h2>
-    <div class="control-group">
-        <label class="control-label" for="textarea">default.vcl</label>
-        <div class="controls">
-            <textarea class="input-xxlarge" id="textarea" rows="20">
-{{ vcltext }}
-            </textarea>
+                    </textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Test VCL</button>
+                    <button type="submit" class="btn btn-secondary">Save changes</button>
+                    <button class="btn">Cancel</button>
+                </div>
+            </div>
         </div>
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Test VCL</button>
-            <button type="submit" class="btn btn-secondary">Save changes</button>
-            <button class="btn">Cancel</button>
-        </div>
-    </div>
-</div>
 {% include "frontend/footer.html" %}
 {% endblock %}
