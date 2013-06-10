@@ -19,7 +19,7 @@ function drawCharts(){
     ]);
 
     var hitrate_options = {
-        width: 400, height: 120,
+        width: 400, height: 200,
         redFrom: 0, redTo: 20,
         yellowFrom:20, yellowTo: 40,
         greenFrom:80, greenTo: 100,
@@ -36,7 +36,7 @@ function drawCharts(){
 
     memory_chart = new google.visualization.Gauge(document.getElementById('memusage_div')).draw(memory_data,
         {
-        width: 400, height: 120,
+        width: 400, height: 200,
         minorTicks: 5,
         max: {{ memory_stats.MBytes_available }}
         }
@@ -49,13 +49,13 @@ function drawCharts(){
 	      legend: {
 		position: 'top'
 	      },
-	width: 300, heigth: 200
+	width: 450, heigth: 200
     }
     var hitmiss_data = google.visualization.arrayToDataTable([
         ['Statname', 'Value'],
-        ['Cache Hits', {{ cache_stats.Cache_Hits }}],
-        ['Cache Misses', {{ cache_stats.Cache_Misses }}],
-        ['Cache hit for Pass', {{ cache_stats.Cache_Hit_for_pass }}]
+        ['Hits', {{ cache_stats.Cache_Hits }}],
+        ['Misses', {{ cache_stats.Cache_Misses }}],
+        ['Hit for Pass', {{ cache_stats.Cache_Hit_for_pass }}]
     ]);
     var hitmiss_chart = new google.visualization.PieChart(document.getElementById('hitmisspie_div'));
     hitmiss_chart.draw(hitmiss_data, hitmiss_options);
@@ -63,8 +63,9 @@ function drawCharts(){
     // Barchart client request
     var request_options = {
         title:"Total client requests",
-            width:500,
-        legend: 'none'
+	      is3D: true,
+	      width:500,
+	      legend: 'none'
         }
     var request_data = google.visualization.arrayToDataTable([
         ['Label', 'Value'],

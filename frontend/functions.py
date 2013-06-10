@@ -64,10 +64,32 @@ class varnish_stats():
         return self.backend_stats
 
     def memory_st(self):
-        self.mem_stats = {
-        "MBytes_available": (int(self.stats_dict['SMA.s0.g_space'])/1024/1024),
-        "MBytes_allocated": (int(self.stats_dict['SMA.s0.c_bytes'])/1024/1024)
-        }
+        #self.mem_stats = {
+        #"MBytes_available": (int(self.stats_dict['SMA.s0.g_space'])/1024/1024),
+        #"MBytes_allocated": (int(self.stats_dict['SMA.s0.c_bytes'])/1024/1024)
+        #}
+	import re
+	# Get memory of varnishd from default file on ubuntu
+	varnishdefault = open('/etc/default/varnish','r')
+	for line in varnishdefault:
+		if re.search('^VARNISH_STORAGE_SIZE' ,line):
+			totalmem = line.split('=')[1][:-2]
+			#print "Total Memory Asigned: " + totalmem
+
+	import psutil
+	ps = psutil.get_process_list()
+	for p in ps:
+		if p.name == "varnishd" and p.ppid != 1:
+			varnishpid = p.pid
+	i = psutil.Process(varnishpid)
+	meminfo = i.get_memory_info()
+	memusage = i.get_memory_info()[0]
+
+	self.mem_stats = {
+			"MBytes_available": int(totalmem),
+			"MBytes_allocated": int(memusage)/1024/1024
+			}
+
         return self.mem_stats
 
 def varnishVersion():
