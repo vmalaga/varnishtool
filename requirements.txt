@@ -1,11 +1,12 @@
-django
+django==1.4
 varnish-admin-socket
 distribute==0.6.35
-MySQL-python
+#MySQL-python
 django-bootstrap-toolkit
 ipython
-gunicorn
+gunicorn==0.17.2
 django-debug-toolbar
-pyxml
+#pyxml
 django-extensions
 simplejson
+psutil==0.4.1

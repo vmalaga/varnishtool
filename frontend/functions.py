@@ -23,44 +23,40 @@ class varnish_stats():
             varnishStats = subprocess.check_output("varnishstat -1",
                 stderr=subprocess.STDOUT,
                 shell=True).splitlines()
+            varnishStats.pop()
 
             self.stats_dict = dict((line.split( )[0],line.split( )[1]) for line in varnishStats)
             self.stats_dict2 = dict(( ' '.join(line.split( )[3:]) ,line.split( )[1] ) for line in varnishStats)
             return self.stats_dict2
 
-            #varnish_stats = subprocess.check_output("varnishstat -1",
-            #    stderr=subprocess.STDOUT,
-            #    shell=True).splitlines()
-
-            #self.stats_dict = dict((line.split( )[0],line.split( )[1]) for line in varnish_stats)
 
         except subprocess.CalledProcessError:
             return "Error getting varnishstats on local machine"
 
     def client_st(self):
-        self.client_stats = {"Client_Connections": self.stats_dict['client_conn'],
-        "Client_Requests": self.stats_dict['client_req']}
+        self.client_stats = {"Client_Connections": self.stats_dict['MAIN.sess_conn'],
+        "Client_Requests": self.stats_dict['MAIN.client_req']}
         return self.client_stats
 
     def cache_st(self):
         try:
-            hitrate = int(self.stats_dict['cache_hit']) * 100 / int(self.stats_dict['client_req'])
+            hitrate = int(self.stats_dict['MAIN.cache_hit']) * 100 / int(self.stats_dict['MAIN.client_req'])
         except ZeroDivisionError:
             hitrate = 0
 
-        self.cache_stats = {"Cache_Hits": self.stats_dict['cache_hit'],
-        "Cache_Misses": self.stats_dict['cache_miss'],
-        "Cache_Hit_for_pass": self.stats_dict['cache_hitpass'],
-        "Client_Requests": self.stats_dict['client_req'],
+        self.cache_stats = {"Cache_Hits": self.stats_dict['MAIN.cache_hit'],
+        "Cache_Misses": self.stats_dict['MAIN.cache_miss'],
+        "Cache_Hit_for_pass": self.stats_dict['MAIN.cache_hitpass'],
+        "Client_Requests": self.stats_dict['MAIN.client_req'],
         "Hitrate": hitrate}
         return self.cache_stats
 
     def backend_st(self):
-        self.backend_stats = {"Backend Connections": self.stats_dict['backend_conn'],
-        "Backend Connections Fails": self.stats_dict['backend_fail'],
-        "Backend Reuse": self.stats_dict['backend_reuse'],
-        "Backend Connections close": self.stats_dict['backend_toolate'],
-        "Backend Connections recycle": self.stats_dict['backend_recycle']}
+        self.backend_stats = {"Backend Connections": self.stats_dict['MAIN.backend_conn'],
+        "Backend Connections Fails": self.stats_dict['MAIN.backend_fail'],
+        "Backend Reuse": self.stats_dict['MAIN.backend_reuse'],
+        "Backend Connections close": self.stats_dict['MAIN.backend_fail'],
+        "Backend Connections recycle": self.stats_dict['MAIN.backend_recycle']}
         return self.backend_stats
 
     def memory_st(self):
