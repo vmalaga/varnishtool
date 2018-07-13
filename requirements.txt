@@ -4,7 +4,7 @@ distribute==0.6.35
 #MySQL-python
 django-bootstrap-toolkit
 ipython
-gunicorn==0.17.2
+gunicorn
 django-debug-toolbar
 #pyxml
 django-extensions
